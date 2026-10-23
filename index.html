@@ -1,141 +1,208 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWA SprintFit | المنصة السيبرانية-الحيوية</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        :root { 
-            --bg-color: #0b0f19; 
-            --card-bg: #131c2e; 
-            --accent-blue: #0ea5e9; 
-            --accent-glow: rgba(14, 165, 233, 0.3);
-            --danger: #f43f5e; 
-            --success: #10b981; 
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
-            background: var(--bg-color); 
-            color: var(--text-main); 
-            padding: 20px; 
-            margin: 0; 
-            text-align: center; 
-        }
-        .container { max-width: 420px; margin: 0 auto; }
-        
-        /* الهيدر على طراز التطبيقات الذكية */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
-        .header h1 { font-size: 20px; margin: 0; font-weight: 700; letter-spacing: 0.5px; }
-        .battery-badge { background: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--success); display: flex; align-items: center; gap: 4px; }
-
-        /* البطاقات الفاخرة */
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            padding: 22px; 
-            border-radius: 24px; 
-            margin-bottom: 16px; 
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
-            text-align: right;
-        }
-        
-        /* دائرية حالة الاتصال الفاخرة */
-        .connection-box { display: flex; align-items: center; justify-content: space-between; }
-        .status-info h3 { margin: 0 0 4px 0; font-size: 16px; }
-        .status-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
-        .dot { width: 12px; height: 12px; background: var(--danger); border-radius: 50%; transition: 0.3s; box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1); }
-        .dot.active { background: var(--success); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15); }
-
-        /* شبكة المؤشرات الحيوية (مثل تطبيقات الساعات الأصلية) */
-        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .metric-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 16px; text-align: center; }
-        .metric-card span { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
-        .metric-card strong { font-size: 18px; color: var(--accent-blue); }
-
-        /* الأزرار العصرية */
-        button { 
-            background: linear-gradient(135deg, #0ea5e9, #2563eb); 
-            color: white; 
-            border: none; 
-            padding: 14px; 
-            width: 100%; 
-            border-radius: 14px; 
-            font-size: 15px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            margin-top: 12px; 
-            transition: 0.2s; 
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
-        button:active { transform: scale(0.98); }
-
-        /* التيرمينال وسجل الأحداث الخارق */
-        .terminal { background: #07090e; color: #38bdf8; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; text-align: left; padding: 12px; border-radius: 12px; height: 100px; overflow-y: auto; direction: ltr; border: 1px solid rgba(255,255,255,0.03); }
-
-        /* نافذة الطوارئ الفخمة */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.9); z-index: 999; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--card-bg); border: 2px solid var(--danger); padding: 25px; border-radius: 24px; text-align: center; max-width: 320px; box-shadow: 0 0 50px rgba(244, 63, 94, 0.3); }
-        .countdown { font-size: 52px; font-weight: 800; color: var(--danger); margin: 10px 0; font-family: monospace; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#000000">
+<title>SprintFit Control</title>
+<style>
+:root{--bg:#000;--g:rgba(255,255,255,.06);--gb:rgba(255,255,255,.12);--t:#f4f6f8;--m:#8b94a0;--ok:#1de27a;--bl:#22c3ff;--pu:#8a5cff;--rd:#ff4560;--am:#ffb02e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--t);font-family:-apple-system,"SF Arabic","Segoe UI",Tahoma,sans-serif;overflow:hidden}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(400px 300px at 85% -5%,rgba(29,226,122,.18),transparent),radial-gradient(380px 300px at 0% 40%,rgba(138,92,255,.16),transparent),radial-gradient(300px 260px at 100% 90%,rgba(34,195,255,.12),transparent);pointer-events:none}
+#app{position:relative;height:100%;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+header{padding:14px 18px 6px;display:flex;justify-content:space-between;align-items:center}
+header h1{margin:0;font-size:22px;letter-spacing:.3px}header small{color:var(--m);font-size:12px;display:block;margin-top:2px;direction:ltr;text-align:right}
+.bat{display:flex;align-items:center;gap:6px;font-weight:700;direction:ltr}
+.bat i{width:30px;height:14px;border:2px solid #fff6;border-radius:4px;position:relative;display:block}
+.bat i:after{content:"";position:absolute;left:-5px;top:3px;width:2px;height:4px;background:#fff6}
+.bat b{display:block;height:100%;width:0;background:var(--ok);border-radius:1px;transition:.5s}
+main{flex:1;overflow-y:auto;padding:8px 16px 110px;-webkit-overflow-scrolling:touch}
+.page{display:none;animation:in .35s}.page.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.card{background:var(--g);border:1px solid var(--gb);border-radius:22px;padding:16px;margin:0 0 12px;backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.1);transform-style:preserve-3d;transition:transform .15s}
+.card h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px}
+.card p,.note{color:var(--m);font-size:12.5px;line-height:1.7;margin:6px 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid .card{margin:0;text-align:center;padding:14px 8px}
+.v{font-size:34px;font-weight:800;direction:ltr;line-height:1.1}.u{font-size:12px;color:var(--m);font-weight:500}.l{font-size:12px;color:var(--m);margin-top:4px}
+.heart{display:inline-block;animation:hb 1s infinite;color:var(--rd)}@keyframes hb{50%{transform:scale(1.25)}}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--rd);box-shadow:0 0 12px var(--rd)}.dot.on{background:var(--ok);box-shadow:0 0 14px var(--ok)}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+.btn{padding:12px 18px;border-radius:14px;background:linear-gradient(135deg,var(--ok),#10b66b);color:#00110a;font-weight:800;box-shadow:0 6px 20px rgba(29,226,122,.35);transition:.15s}
+.btn:active{transform:scale(.95)}.btn.d{background:linear-gradient(135deg,var(--rd),#c42342);color:#fff;box-shadow:0 6px 20px rgba(255,69,96,.35)}.btn.g{background:var(--g);color:var(--t);box-shadow:none;border:1px solid var(--gb)}
+.chip{padding:5px 12px;border-radius:99px;font-size:12px;font-weight:700;background:rgba(29,226,122,.15);color:var(--ok)}
+.chip.w{background:rgba(255,176,46,.15);color:var(--am)}.chip.r{background:rgba(255,69,96,.15);color:var(--rd)}
+.sw{position:relative;width:52px;height:30px;border-radius:99px;background:#2a2f36;transition:.25s;flex:none}
+.sw:after{content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.25s}
+.sw.on{background:var(--ok)}.sw.on:after{right:25px}
+.set{padding:12px 0;border-bottom:1px solid var(--gb)}.set:last-child{border:0}.set b{font-size:14px}
+#log{background:#020604;border:1px solid #0e2a1b;border-radius:14px;height:230px;overflow-y:auto;padding:10px;font:11.5px/1.7 ui-monospace,Menlo,monospace;direction:ltr;text-align:left;color:#7dffb4}
+#log .e{color:var(--rd)}#log .w{color:var(--am)}#log .i{color:#6fd3ff}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(12,14,16,.72);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);border-top:1px solid var(--gb)}
+nav button{background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--m);padding:6px 12px;border-radius:14px;transition:.2s}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--ok);background:rgba(29,226,122,.1)}nav button.on svg{filter:drop-shadow(0 0 6px var(--ok))}
+.pat{display:flex;gap:5px;align-items:center;height:26px;direction:ltr}.pat s{display:block;height:14px;border-radius:4px;background:var(--c)}
+.bar{height:8px;border-radius:9px;background:#1b1f25;overflow:hidden}.bar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--bl),var(--ok));transition:.6s}
+#modal{position:fixed;inset:0;background:rgba(40,0,8,.92);backdrop-filter:blur(14px);display:none;z-index:9;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:30px;animation:fl 1s infinite}
+#modal.on{display:flex}@keyframes fl{50%{background:rgba(90,0,18,.95)}}
+#cd{font-size:110px;font-weight:900;color:var(--rd);text-shadow:0 0 40px var(--rd);direction:ltr;line-height:1}
+#modal .btn{font-size:24px;padding:20px 50px;margin-top:24px}
+</style>
 </head>
 <body>
+<div id="app">
+<header><div><h1>SprintFit</h1><small id="dn">PAWA · غير مقترن</small></div><div class="bat"><span id="bp">--%</span><i><b id="bb"></b></i></div></header>
+<main>
 
-<div class="container">
-    <!-- الهيدر -->
-    <div class="header">
-        <h1>PAWA SprintFit</h1>
-        <div class="battery-badge">⚡ <span id="batteryLevel">--%</span></div>
-    </div>
-    
-    <!-- بطاقة الاتصال الرئيسية -->
-    <div class="card">
-        <div class="connection-box">
-            <div class="status-info">
-                <h3 id="statusText">السوار غير متصل</h3>
-                <p id="bioState">جاهز للمسح الضوئي والبلوتوث</p>
-            </div>
-            <span id="statusDot" class="dot"></span>
-        </div>
-        <button id="connectBtn">ربط السوار الحصري (BLE)</button>
-    </div>
+<section class="page on" id="p0">
+ <div class="card" data-t><div class="row"><h3><span class="dot" id="cdot"></span> حالة البلوتوث</h3><span class="chip r" id="cst">غير متصل</span></div>
+  <p id="cmsg">BLE 5.1 · اضغط للربط واختر السوار من القائمة.</p>
+  <div class="row" style="margin-top:10px"><button class="btn" id="bc">ربط السوار</button><button class="btn g" id="bd">قطع الاتصال</button></div></div>
+ <div class="grid">
+  <div class="card" data-t><div class="v"><span class="heart">♥</span> <span id="hr">--</span></div><div class="l">نبض القلب · BPM</div></div>
+  <div class="card" data-t><div class="v"><span id="hrv">--</span><span class="u"> ms</span></div><div class="l">التوتر HRV (RMSSD)</div></div>
+  <div class="card" data-t><div class="v"><span id="sp">--</span><span class="u"> %</span></div><div class="l">الأكسجين SpO₂</div></div>
+  <div class="card" data-t><div class="v" style="font-size:24px;padding:5px 0" id="wr">--</div><div class="l">مؤشر الارتداء</div></div>
+ </div>
+ <div class="card" data-t><h3>🧠 السياق الحيوي الحالي</h3><div class="row"><div><div style="font-size:22px;font-weight:800" id="ctx">بانتظار البيانات</div><p id="ctxd" style="margin:2px 0 0">اربط السوار لبدء التحليل.</p></div><div style="font-size:42px" id="ctxi">⌛</div></div></div>
+ <div class="card"><h3>تجربة بدون سوار</h3><p>وضع محاكاة لاختبار الواجهة والإنذارات.</p><div class="row" style="flex-wrap:wrap;justify-content:flex-start"><button class="btn g" id="sim">تشغيل المحاكاة</button><button class="btn g" onclick="simEvt('off')">خلع السوار</button><button class="btn g" onclick="simEvt('flat')">توقف النبض</button><button class="btn g" onclick="simEvt('ok')">استعادة</button></div></div>
+</section>
 
-    <!-- بطاقة المؤشرات الحيوية وسياق النظام (على طراز التطبيقات الأصلية) -->
-    <div class="card" style="text-align: right;">
-        <h3 style="margin-top: 0; font-size: 15px; color: var(--text-muted);">المؤشرات السيبرانية-الحيوية</h3>
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <span>نبض القلب (HR)</span>
-                <strong id="hrValue">--</strong> <span style="font-size:10px; display:inline;">BPM</span>
-            </div>
-            <div class="metric-card">
-                <span>مستوى التوتر (HRV)</span>
-                <strong id="stressValue">متزن</strong>
-            </div>
-        </div>
-        <p id="contextState" style="font-size: 13px; color: var(--accent-blue); margin-top: 15px; margin-bottom: 0; text-align: center;">🛡️ السياق الحالي: الوضع الطبيعي الآمن</p>
-    </div>
+<section class="page" id="p1">
+ <div class="card" data-t><h3>🤖 Silent Bio-AI</h3>
+  <p>محرك إحصائي محلي صامت: يتعلم متوسط نبضك لكل ساعة من اليوم داخل جهازك فقط، ولا يرسل شيئاً لأي خادم، ولا يزعجك إلا عند انحراف واضح.</p>
+  <div class="row"><span class="l">عيّنات التعلّم</span><b id="ais">0</b></div><div class="bar" style="margin:6px 0 12px"><b id="aib"></b></div>
+  <div class="row"><span class="l">المعتاد لهذه الساعة</span><b id="aib2" dir="ltr">--</b></div>
+  <div class="row"><span class="l">الانحراف الحالي</span><b id="aiz" dir="ltr">--</b></div></div>
+ <div class="card" data-t><h3>⌚ فحص الارتداء الفعلي (Off-Wrist Logic)</h3>
+  <p>تُدمج ثلاث إشارات: علامة ملامسة الجلد في حزمة نبض القلب القياسية، ووجود قراءة نبض صالحة، وعمر آخر عيّنة. المنطق:</p>
+  <div class="set"><b>① لا ملامسة للجلد</b><p>= السوار على الطاولة أو مخلوع ← لا إنذار إطلاقاً.</p></div>
+  <div class="set"><b>② ملامسة + نبض طبيعي</b><p>= مرتدى وسليم.</p></div>
+  <div class="set"><b>③ ملامسة مستمرة + فقدان النبض لمدة طويلة</b><p>= حالة مشتبهة فقط ← يبدأ مسار الخط الأحمر.</p></div>
+  <p style="color:var(--am)">⚠ لا توجد خوارزمية تضمن 100% (حركة السوار أو ارتخاؤه قد يعطي قراءة خاطئة)؛ لذلك يوجد عداد إلغاء 30 ثانية قبل أي استغاثة. الحالة الآن: <b id="owl">--</b></p></div>
+ <div class="card" data-t><h3>📳 الأبجدية الاهتزازية</h3>
+  <div class="set"><div class="row"><div><b style="color:var(--ok)">بسيطة</b><p style="margin:0">اهتزازة قصيرة · تنبيه عادي</p></div><div class="pat" style="--c:var(--ok)"><s style="width:12px"></s></div><button class="btn g" onclick="vib([120],'بسيطة')">جرّب</button></div></div>
+  <div class="set"><div class="row"><div><b style="color:var(--am)">متوسطة</b><p style="margin:0">اهتزازتان · انتباه</p></div><div class="pat" style="--c:var(--am)"><s style="width:18px"></s><s style="width:18px"></s></div><button class="btn g" onclick="vib([200,120,200],'متوسطة')">جرّب</button></div></div>
+  <div class="set"><div class="row"><div><b style="color:var(--rd)">خطيرة</b><p style="margin:0">ثلاث طويلة متواصلة · خطر</p></div><div class="pat" style="--c:var(--rd)"><s style="width:30px"></s><s style="width:30px"></s><s style="width:30px"></s></div><button class="btn g" onclick="vib([600,150,600,150,600],'خطيرة')">جرّب</button></div></div>
+  <p>المعاينة تعمل على هاتفك (حيث يدعم المتصفح الاهتزاز) مع صوت. إرسال الأنماط إلى السوار نفسه يحتاج خاصية GATT خاصة بالشركة المصنّعة.</p></div>
+</section>
 
-    <!-- سجل النظام والتعلم الذاتي -->
-    <div class="card" style="text-align: right;">
-        <h3 style="margin-top: 0; font-size: 15px; color: var(--text-muted);">سجل التشغيل والذكاء الصامت</h3>
-        <div id="logBox" class="terminal">[SYSTEM]: واجهة التطبيق جاهزة للربط الفعلي...</div>
-    </div>
+<section class="page" id="p2">
+ <div class="card" data-t style="border-color:rgba(255,69,96,.45)"><h3 style="color:var(--rd)">🚨 الخط الأحمر</h3>
+  <p>لا يُفعَّل أي إنذار إلا إذا توفّرت معاً: السوار مرتدى (ملامسة جلد) + اختفاء النبض لمدة العتبة. خلع السوار أو انقطاع البلوتوث وحده <b>لا يُعدّ</b> حالة طوارئ.</p>
+  <div class="set"><div class="row"><b>تفعيل الخط الأحمر</b><div class="sw" data-s="red"></div></div></div>
+  <div class="set"><div class="row"><b>مدة فقدان النبض قبل الإنذار</b><b dir="ltr"><span id="thv">20</span>s</b></div><input type="range" id="th" min="10" max="60" value="20" style="width:100%;accent-color:#ff4560"></div>
+  <div class="set"><b>رقم جهة الاتصال الطارئة</b><input id="ecn" placeholder="مثال: +9665XXXXXXXX" dir="ltr" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--gb);background:#0b0d10;color:#fff;font:inherit"></div></div>
+ <div class="card" data-t><h3>⏱ العداد الحاكم · 30 ثانية</h3>
+  <p>عند الاشتباه تظهر نافذة بصوت واهتزاز مكثف. اضغط «أنا بخير» لإلغاء الإنذار، وإن انتهى العداد تُجهَّز رسالة استغاثة مع موقعك الجغرافي.</p>
+  <p style="color:var(--am)">⚠ المتصفح لا يستطيع الاتصال بالطوارئ الرسمية أو إرسال SMS تلقائياً؛ سيفتح تطبيق الرسائل بنص جاهز وتضغط «إرسال»، وإلا تُستخدم نافذة المشاركة.</p>
+  <button class="btn d" style="width:100%" onclick="trigger('اختبار يدوي')">اختبار نافذة الطوارئ</button></div>
+</section>
+
+<section class="page" id="p3">
+ <div class="card" data-t><h3>⚙️ الإعدادات</h3>
+  <div class="set"><div class="row"><div><b>الحماية الصامتة</b><p style="margin:0">مراقبة بدون إشعارات مزعجة</p></div><div class="sw" data-s="silent"></div></div></div>
+  <div class="set"><div class="row"><div><b>إعادة الاتصال التلقائي</b><p style="margin:0">محاولة العودة عند الانقطاع</p></div><div class="sw" data-s="auto"></div></div></div>
+  <div class="set"><div class="row"><div><b>الدرع التنبؤي</b><p style="margin:0">تنبيه عند انحراف النبض عن المعتاد</p></div><div class="sw" data-s="shield"></div></div></div></div>
+ <div class="card"><div class="row"><h3 style="margin:0">🖥 سجل التشغيل</h3><button class="btn g" style="padding:6px 12px" onclick="$('log').innerHTML=''">مسح</button></div><div id="log" style="margin-top:10px"></div></div>
+ <div class="card"><h3>ℹ️ ملاحظة تقنية</h3><p>Web Bluetooth غير مدعوم في Safari على iOS. للربط الفعلي افتح الصفحة في متصفح <b>Bluefy</b> (مجاني على App Store) أو استخدم Chrome على أندرويد. يعتمد الربط على الخدمات القياسية (النبض 0x180D، البطارية 0x180F، الأكسجين 0x1822)؛ إن كان السوار يستخدم بروتوكولاً خاصاً فلن تظهر بعض القراءات وسيوضح السجل ذلك.</p></div>
+</section>
+</main>
+<nav id="nav">
+ <button class="on" data-p="0"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>الرئيسية</button>
+ <button data-p="1"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6c0 2 1 3 2 4v3h8v-3c1-1 2-2 2-4a6 6 0 0 0-6-6zM9 20h6"/></svg>الذكاء</button>
+ <button data-p="2"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>الطوارئ</button>
+ <button data-p="3"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12l2-1-2-3-2 1a7 7 0 0 0-2-1l-.5-2h-4L10 8a7 7 0 0 0-2 1L6 8 4 11l2 1a7 7 0 0 0 0 2l-2 1 2 3 2-1a7 7 0 0 0 2 1l.5 2h4L14 18a7 7 0 0 0 2-1l2 1 2-3-2-1a7 7 0 0 0 0-2z" transform="translate(0 -1)"/></svg>الإعدادات</button>
+</nav>
 </div>
 
-<!-- نافذة الطوارئ القصوى الذكية -->
-<div id="emergencyModal" class="modal">
-    <div class="modal-content">
-        <h2 style="color: var(--danger); margin-top:0;">⚠️ تنبيه طوارئ قصوى</h2>
-        <p style="font-size: 13px; color: var(--text-muted);">تم رصد توقف خطير في المؤشرات الحيوية مع ثبات الجهاز!</p>
-        <div id="countdownTimer" class="countdown">30</div>
-        <p style="font-size: 12px; color: var(--text-muted);">سيتم إرسال نداء استغاثة تلقائياً ما لم تؤكد أنك بخير.</p>
-        <button onclick="cancelEmergency()" style="background: var(--success); margin-top: 15px;">أنا بخير (إلغاء الإنذار)</button>
-    </div>
-</div>
+<div id="modal"><div style="font-size:60px">🚨</div><h2 style="margin:6px 0">لم نعد نلتقط نبضك!</h2><p style="color:#ffb3bf;margin:0 0 14px" id="mr"></p><div id="cd">30</div><p style="color:#ffb3bf">ثانية قبل إرسال الاستغاثة مع موقعك</p><button class="btn" onclick="cancelEm()">أنا بخير</button></div>
 
-<script src="app.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const S=Object.assign({red:true,silent:true,auto:true,shield:true,thr:20,num:''},JSON.parse(localStorage.getItem('sf')||'{}'));
+const save=()=>{try{localStorage.setItem('sf',JSON.stringify(S))}catch(e){}};
+const log=(m,c='')=>{const l=$('log');l.insertAdjacentHTML('beforeend',`<div class="${c}">[${new Date().toLocaleTimeString('en-GB')}] ${m}</div>`);l.scrollTop=l.scrollHeight};
+/* nav */
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#nav button,.page').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('p'+b.dataset.p).classList.add('on');navigator.vibrate&&navigator.vibrate(8)});
+/* switches */
+document.querySelectorAll('.sw').forEach(s=>{s.classList.toggle('on',!!S[s.dataset.s]);s.onclick=()=>{S[s.dataset.s]=!S[s.dataset.s];s.classList.toggle('on');save();log(`إعداد ${s.dataset.s} = ${S[s.dataset.s]}`,'i')}});
+$('th').value=S.thr;$('thv').textContent=S.thr;$('th').oninput=e=>{S.thr=+e.target.value;$('thv').textContent=S.thr;save()};
+$('ecn').value=S.num;$('ecn').onchange=e=>{S.num=e.target.value.trim();save()};
+/* 3D tilt */
+document.querySelectorAll('[data-t]').forEach(c=>{c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(700px) rotateY(${x*-8}deg) rotateX(${y*8}deg)`});['pointerleave','pointerup'].forEach(ev=>c.addEventListener(ev,()=>c.style.transform=''))});
+/* audio + vibrate */
+let ac;const beep=(f=880,d=.15)=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.value=.25;o.start();o.stop(ac.currentTime+d)}catch(e){}};
+function vib(p,n){navigator.vibrate&&navigator.vibrate(p);let t=0;p.forEach((d,i)=>{if(i%2==0)setTimeout(()=>beep(500+p.length*80,d/1000),t);t+=d});log('معاينة اهتزاز: '+n,'i')}
+/* state */
+const st={dev:null,srv:null,ch:null,hr:0,rr:[],contactSup:false,contact:null,last:0,conn:false,lostSince:0,sim:null,em:false,hist:{}};
+const hrBuf=[];
+function setConn(on,msg){st.conn=on;$('cdot').classList.toggle('on',on);const c=$('cst');c.textContent=on?'متصل':'غير متصل';c.className='chip '+(on?'':'r');if(msg)$('cmsg').textContent=msg}
+async function connect(){
+ if(!navigator.bluetooth){log('Web Bluetooth غير مدعوم هنا — استخدم Bluefy على iOS','e');$('cmsg').textContent='المتصفح لا يدعم Web Bluetooth. افتح الصفحة في Bluefy.';return}
+ try{log('طلب اختيار جهاز BLE...','i');
+  st.dev=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['heart_rate','battery_service',0x1822,0xFFF0,0xFEE7]});
+ }catch(e){log('أُلغي الاختيار: '+e.message,'w');return}
+ st.dev.removeEventListener('gattserverdisconnected',onDisc);st.dev.addEventListener('gattserverdisconnected',onDisc);
+ $('dn').textContent='PAWA · '+(st.dev.name||st.dev.id.slice(0,8));await link()}
+async function link(){
+ try{log('GATT connect...','i');st.srv=await st.dev.gatt.connect();setConn(true,'تم الاتصال · جاري اكتشاف الخدمات');log('GATT متصل ✔');
+  try{const s=await st.srv.getPrimaryServices();log('خدمات: '+s.map(x=>x.uuid.slice(4,8)).join(', '),'i')}catch(e){}
+  try{const b=await st.srv.getPrimaryService('battery_service'),c=await b.getCharacteristic('battery_level');const u=async v=>setBat(v.getUint8(0));u(await c.readValue());await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>u(e.target.value));log('البطارية ✔')}catch(e){log('لا خدمة بطارية قياسية','w')}
+  try{const h=await st.srv.getPrimaryService('heart_rate'),c=await h.getCharacteristic('heart_rate_measurement');await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>parseHR(e.target.value));log('نبض القلب ✔ (0x2A37)')}catch(e){log('لا خدمة نبض قياسية: '+e.message,'w')}
+  try{const p=await st.srv.getPrimaryService(0x1822),c=await p.getCharacteristic(0x2A5F);await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>{const v=e.target.value.getUint16(1,true);let m=v&0xfff;if(m>=0x800)m-=0x1000;let x=v>>12;if(x>=8)x-=16;const o=Math.round(m*10**x);if(o>0&&o<=100)$('sp').textContent=o});log('SpO₂ ✔')}catch(e){log('لا خدمة أكسجين قياسية','w')}
+  st.last=Date.now()}catch(e){log('فشل الاتصال: '+e.message,'e');setConn(false)}}
+function onDisc(){log('انقطع الاتصال (لا يُعدّ طوارئ)','w');setConn(false,'انقطع الاتصال');if(S.auto&&st.dev){let n=0;const t=async()=>{if(st.conn||n>=6)return;n++;log('إعادة اتصال #'+n,'i');await link();if(!st.conn)setTimeout(t,3000*n)};setTimeout(t,2000)}}
+function disc(){S.auto=false;document.querySelector('[data-s=auto]').classList.remove('on');if(st.dev&&st.dev.gatt.connected)st.dev.gatt.disconnect();st.sim&&simStop();setConn(false,'تم القطع يدوياً');log('قطع صريح من المستخدم','w')}
+function setBat(v){$('bp').textContent=v+'%';$('bb').style.width=v+'%';$('bb').style.background=v<20?'var(--rd)':'var(--ok)';log('بطارية '+v+'%','i')}
+function parseHR(dv){const f=dv.getUint8(0);let i=1,hr;if(f&1){hr=dv.getUint16(i,true);i+=2}else hr=dv.getUint8(i++);
+ st.contactSup=!!(f&4);st.contact=st.contactSup?!!(f&2):null;if(f&8)i+=2;const rr=[];if(f&16)while(i+1<dv.byteLength){rr.push(dv.getUint16(i,true)/1024*1000);i+=2}
+ feed(hr,rr);log(`HR=${hr} contact=${st.contact} rr=${rr.length}`)}
+function feed(hr,rr){st.hr=hr;st.last=Date.now();$('hr').textContent=hr||'--';if(rr&&rr.length){st.rr.push(...rr);st.rr=st.rr.slice(-30);if(st.rr.length>5){let s=0;for(let i=1;i<st.rr.length;i++)s+=(st.rr[i]-st.rr[i-1])**2;$('hrv').textContent=Math.round(Math.sqrt(s/(st.rr.length-1)))}}
+ if(hr>30&&hr<220){hrBuf.push(hr);if(hrBuf.length>20)hrBuf.shift();learn(hr);ctx()}}
+/* Bio-AI */
+function learn(hr){const h=new Date().getHours(),a=st.hist[h]||(st.hist[h]={n:0,m:0,v:0});a.n++;const d=hr-a.m;a.m+=d/a.n;a.v+=d*(hr-a.m);
+ const tot=Object.values(st.hist).reduce((s,x)=>s+x.n,0);$('ais').textContent=tot;$('aib').style.width=Math.min(100,tot/3)+'%';
+ if(a.n>5){const sd=Math.sqrt(a.v/(a.n-1))||5,z=(hr-a.m)/sd;$('aib2').textContent=Math.round(a.m)+' BPM';$('aiz').textContent=(z>=0?'+':'')+z.toFixed(1)+' σ';
+  if(S.shield&&Math.abs(z)>3&&a.n>30&&!learn.w){learn.w=1;vib([200,120,200],'درع تنبؤي');log('انحراف غير معتاد في النبض ('+z.toFixed(1)+'σ)','w');setTimeout(()=>learn.w=0,300000)}}}
+function ctx(){const hr=st.hr,r=+$('hrv').textContent||null,h=new Date().getHours();let t,d,i;
+ if(hr<62&&(h>=23||h<7)){t='النوم';d='نبض منخفض في وقت الراحة';i='😴'}
+ else if(hr>100&&r&&r<20){t='إجهاد عابر';d='نبض مرتفع مع تقلب منخفض — خذ نفساً عميقاً';i='😤'}
+ else if(hr>=62&&hr<=85&&r&&r>=30){t='وضع التركيز';d='هدوء وتوازن عصبي جيد';i='🎯'}
+ else if(hr>110){t='نشاط بدني';d='نبض مرتفع';i='🏃'}else{t='حالة طبيعية';d='لا شيء يستدعي الانتباه';i='🙂'}
+ $('ctx').textContent=t;$('ctxd').textContent=d;$('ctxi').textContent=i}
+/* Off-wrist + red line watchdog */
+function evalW(){const now=Date.now(),age=(now-st.last)/1000;let w,cls='chip';
+ if(!st.conn&&!st.sim){w='—';$('wr').textContent='--';$('owl').textContent='غير متصل';st.lostSince=0;return}
+ if(st.contactSup&&st.contact===false||st.simOff){w='مخلوع';cls='chip w';st.lostSince=0;$('owl').textContent='مخلوع / على الطاولة — لا إنذار'}
+ else if(st.hr>0&&age<10){w='مرتدى ✔';$('owl').textContent='مرتدى · نبض سليم';st.lostSince=0}
+ else{w='مشتبه';cls='chip r';if(!st.lostSince)st.lostSince=now;const lost=(now-st.lostSince)/1000;$('owl').textContent=`ملامسة بلا نبض منذ ${Math.round(lost)}s`;
+  if(S.red&&lost>=S.thr&&!st.em)trigger('ملامسة جلد مستمرة مع فقدان النبض '+Math.round(lost)+' ثانية')}
+ const e=$('wr');e.textContent=w;e.style.color=w.includes('✔')?'var(--ok)':w==='مخلوع'?'var(--am)':'var(--rd)'}
+setInterval(evalW,1000);
+/* Emergency */
+let tm,cnt;
+function trigger(why){if(st.em)return;st.em=true;cnt=30;$('cd').textContent=cnt;$('mr').textContent=why;$('modal').classList.add('on');log('⚠ إنذار: '+why,'e');
+ const tick=()=>{navigator.vibrate&&navigator.vibrate([500,150,500,150,500]);beep(980,.4)};tick();
+ tm=setInterval(()=>{cnt--;$('cd').textContent=cnt;tick();if(cnt<=0){clearInterval(tm);send()}},1000)}
+function cancelEm(){clearInterval(tm);st.em=false;st.lostSince=0;$('modal').classList.remove('on');navigator.vibrate&&navigator.vibrate(0);log('المستخدم: أنا بخير — أُلغي الإنذار ✔')}
+function send(){log('انتهى العداد — تجهيز الاستغاثة...','e');const go=(loc)=>{const msg=`🚨 استغاثة من SprintFit: توقفت المؤشرات الحيوية لمرتدي السوار.${loc?' موقعي: https://maps.google.com/?q='+loc:' (تعذّر تحديد الموقع)'}`;
+  if(S.num){location.href='sms:'+S.num+'?&body='+encodeURIComponent(msg);log('فتح الرسائل إلى '+S.num)}else if(navigator.share){navigator.share({text:msg}).catch(()=>{})}else log(msg,'e');
+  $('modal').classList.remove('on');st.em=false;st.lostSince=0};
+ navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>go(p.coords.latitude+','+p.coords.longitude),()=>go(''),{timeout:6000,enableHighAccuracy:true}):go('')}
+/* Simulation */
+function simStart(){st.sim=setInterval(()=>{if(st.simFlat){st.hr=0;return}if(st.simOff){st.hr=0;st.last=Date.now();return}const hr=70+Math.round(Math.random()*10);feed(hr,[800+Math.random()*60,810+Math.random()*60])},1000);$('sim').textContent='إيقاف المحاكاة';setConn(true,'وضع محاكاة');$('dn').textContent='PAWA · محاكاة';setBat(83);$('sp').textContent=98;log('بدأت المحاكاة','i')}
+function simStop(){clearInterval(st.sim);st.sim=null;st.simOff=st.simFlat=false;$('sim').textContent='تشغيل المحاكاة';setConn(false,'أُوقفت المحاكاة')}
+$('sim').onclick=()=>st.sim?simStop():simStart();
+function simEvt(k){if(!st.sim)return log('شغّل المحاكاة أولاً','w');st.simOff=k==='off';st.simFlat=k==='flat';st.contactSup=true;st.contact=k!=='off';if(k==='ok')st.lostSince=0;if(k==='flat')st.last=Date.now()-1000;log('محاكاة: '+k,'i')}
+$('bc').onclick=connect;$('bd').onclick=disc;
+log('SprintFit جاهز · Web Bluetooth: '+(navigator.bluetooth?'مدعوم':'غير مدعوم'),navigator.bluetooth?'':'w');
+</script>
 </body>
 </html>
