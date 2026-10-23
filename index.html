@@ -100,7 +100,7 @@ nav button.on{color:var(--ok);background:rgba(29,226,122,.1)}nav button.on svg{f
   <div class="set"><div class="row"><b>مدة فقدان النبض قبل الإنذار</b><b dir="ltr"><span id="thv">20</span>s</b></div><input type="range" id="th" min="10" max="60" value="20" style="width:100%;accent-color:#ff4560"></div>
   <div class="set"><b>رقم جهة الاتصال الطارئة</b><input id="ecn" placeholder="مثال: +9665XXXXXXXX" dir="ltr" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--gb);background:#0b0d10;color:#fff;font:inherit"></div></div>
  <div class="card" data-t><h3>⏱ العداد الحاكم · 30 ثانية</h3>
-  <p>عند الاشتباه تظهر نافذة بصوت واهتزاز مكثف. اضغط «أنا بخير» لإلغاء الإنذار، وإن انتهى العداد تُجهَّز رسالة استغاثة مع موقعك الجغرافي.</p>
+  <p>عند الاشتباه تظهر نافذة بصوت واهتزاز مكثف. اضغط «أنا بخير» لإلغاء الإنذار، وإن انتهى العداد تُجهَّز رسالة استغاثة مع موقعك الجغرافي[cite: 9].</p>
   <p style="color:var(--am)">⚠ المتصفح لا يستطيع الاتصال بالطوارئ الرسمية أو إرسال SMS تلقائياً؛ سيفتح تطبيق الرسائل بنص جاهز وتضغط «إرسال»، وإلا تُستخدم نافذة المشاركة.</p>
   <button class="btn d" style="width:100%" onclick="trigger('اختبار يدوي')">اختبار نافذة الطوارئ</button></div>
 </section>
@@ -111,7 +111,7 @@ nav button.on{color:var(--ok);background:rgba(29,226,122,.1)}nav button.on svg{f
   <div class="set"><div class="row"><div><b>إعادة الاتصال التلقائي</b><p style="margin:0">محاولة العودة عند الانقطاع</p></div><div class="sw" data-s="auto"></div></div></div>
   <div class="set"><div class="row"><div><b>الدرع التنبؤي</b><p style="margin:0">تنبيه عند انحراف النبض عن المعتاد</p></div><div class="sw" data-s="shield"></div></div></div></div>
  <div class="card"><div class="row"><h3 style="margin:0">🖥 سجل التشغيل</h3><button class="btn g" style="padding:6px 12px" onclick="$('log').innerHTML=''">مسح</button></div><div id="log" style="margin-top:10px"></div></div>
- <div class="card"><h3>ℹ️ ملاحظة تقنية</h3><p>Web Bluetooth غير مدعوم في Safari على iOS. للربط الفعلي افتح الصفحة في متصفح <b>Bluefy</b> (مجاني على App Store) أو استخدم Chrome على أندرويد. يعتمد الربط على الخدمات القياسية (النبض 0x180D، البطارية 0x180F، الأكسجين 0x1822)؛ إن كان السوار يستخدم بروتوكولاً خاصاً فلن تظهر بعض القراءات وسيوضح السجل ذلك.</p></div>
+ <div class="card"><h3>ℹ️ ملاحظة تقنية</h3><p>Web Bluetooth غير مدعوم في Safari على iOS. للربط الفعلي افتح الصفحة في متصفح <b>Bluefy</b> (مجاني على App Store) أو استخدم Chrome على أندرويد. يعتمد الربط على الخدمات القياسية (النبض 0x180D، البطارية 0x180F، الأكسجين 0x1822); إن كان السوار يستخدم بروتوكولاً خاصاً فلن تظهر بعض القراءات وسيوضح السجل ذلك[cite: 9].</p></div>
 </section>
 </main>
 <nav id="nav">
@@ -144,20 +144,58 @@ function vib(p,n){navigator.vibrate&&navigator.vibrate(p);let t=0;p.forEach((d,i
 const st={dev:null,srv:null,ch:null,hr:0,rr:[],contactSup:false,contact:null,last:0,conn:false,lostSince:0,sim:null,em:false,hist:{}};
 const hrBuf=[];
 function setConn(on,msg){st.conn=on;$('cdot').classList.toggle('on',on);const c=$('cst');c.textContent=on?'متصل':'غير متصل';c.className='chip '+(on?'':'r');if(msg)$('cmsg').textContent=msg}
+
 async function connect(){
  if(!navigator.bluetooth){log('Web Bluetooth غير مدعوم هنا — استخدم Bluefy على iOS','e');$('cmsg').textContent='المتصفح لا يدعم Web Bluetooth. افتح الصفحة في Bluefy.';return}
- try{log('طلب اختيار جهاز BLE...','i');
-  st.dev=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['heart_rate','battery_service',0x1822,0xFFF0,0xFEE7]});
- }catch(e){log('أُلغي الاختيار: '+e.message,'w');return}
- st.dev.removeEventListener('gattserverdisconnected',onDisc);st.dev.addEventListener('gattserverdisconnected',onDisc);
- $('dn').textContent='PAWA · '+(st.dev.name||st.dev.id.slice(0,8));await link()}
+ try{
+  log('طلب اختيار جهاز BLE (فلتر مفتوح)...','i');
+  // تعديل لتسهيل ظهور أي جهاز قريب عبر تفعيل قبول كل الأجهزة بدون قيود للخدمات أثناء البحث
+  st.dev=await navigator.bluetooth.requestDevice({
+    acceptAllDevices: true,
+    optionalServices: ['heart_rate', 'battery_service', 'device_information', 0x1822, 0xFFF0, 0xFEE7]
+  });
+ }catch(e){
+  log('أُلغي الاختيار أو حدث خطأ: '+e.message,'w');
+  return;
+ }
+ st.dev.removeEventListener('gattserverdisconnected',onDisc);
+ st.dev.addEventListener('gattserverdisconnected',onDisc);
+ $('dn').textContent='PAWA · '+(st.dev.name||'سوار ذكي');
+ await link();
+}
+
 async function link(){
- try{log('GATT connect...','i');st.srv=await st.dev.gatt.connect();setConn(true,'تم الاتصال · جاري اكتشاف الخدمات');log('GATT متصل ✔');
-  try{const s=await st.srv.getPrimaryServices();log('خدمات: '+s.map(x=>x.uuid.slice(4,8)).join(', '),'i')}catch(e){}
-  try{const b=await st.srv.getPrimaryService('battery_service'),c=await b.getCharacteristic('battery_level');const u=async v=>setBat(v.getUint8(0));u(await c.readValue());await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>u(e.target.value));log('البطارية ✔')}catch(e){log('لا خدمة بطارية قياسية','w')}
-  try{const h=await st.srv.getPrimaryService('heart_rate'),c=await h.getCharacteristic('heart_rate_measurement');await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>parseHR(e.target.value));log('نبض القلب ✔ (0x2A37)')}catch(e){log('لا خدمة نبض قياسية: '+e.message,'w')}
-  try{const p=await st.srv.getPrimaryService(0x1822),c=await p.getCharacteristic(0x2A5F);await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>{const v=e.target.value.getUint16(1,true);let m=v&0xfff;if(m>=0x800)m-=0x1000;let x=v>>12;if(x>=8)x-=16;const o=Math.round(m*10**x);if(o>0&&o<=100)$('sp').textContent=o});log('SpO₂ ✔')}catch(e){log('لا خدمة أكسجين قياسية','w')}
-  st.last=Date.now()}catch(e){log('فشل الاتصال: '+e.message,'e');setConn(false)}}
+ try{
+  log('جاري الاتصال بـ GATT Server...','i');
+  st.srv=await st.dev.gatt.connect();
+  setConn(true,'تم الاتصال · جاري اكتشاف الخدمات');
+  log('GATT متصل ✔');
+  
+  try{
+    const b=await st.srv.getPrimaryService('battery_service');
+    const c=await b.getCharacteristic('battery_level');
+    const u=async v=>setBat(v.getUint8(0));
+    u(await c.readValue());
+    await c.startNotifications();
+    c.addEventListener('characteristicvaluechanged',e=>u(e.target.value));
+    log('البطارية ✔');
+  }catch(e){log('لا خدمة بطارية قياسية','w')}
+
+  try{
+    const h=await st.srv.getPrimaryService('heart_rate');
+    const c=await h.getCharacteristic('heart_rate_measurement');
+    await c.startNotifications();
+    c.addEventListener('characteristicvaluechanged',e=>parseHR(e.target.value));
+    log('نبض القلب ✔ (0x2A37)');
+  }catch(e){log('لا خدمة نبض قياسية: '+e.message,'w')}
+
+  st.last=Date.now();
+ }catch(e){
+  log('فشل الاتصال: '+e.message,'e');
+  setConn(false,'فشل الاتصال بالسوار');
+ }
+}
+
 function onDisc(){log('انقطع الاتصال (لا يُعدّ طوارئ)','w');setConn(false,'انقطع الاتصال');if(S.auto&&st.dev){let n=0;const t=async()=>{if(st.conn||n>=6)return;n++;log('إعادة اتصال #'+n,'i');await link();if(!st.conn)setTimeout(t,3000*n)};setTimeout(t,2000)}}
 function disc(){S.auto=false;document.querySelector('[data-s=auto]').classList.remove('on');if(st.dev&&st.dev.gatt.connected)st.dev.gatt.disconnect();st.sim&&simStop();setConn(false,'تم القطع يدوياً');log('قطع صريح من المستخدم','w')}
 function setBat(v){$('bp').textContent=v+'%';$('bb').style.width=v+'%';$('bb').style.background=v<20?'var(--rd)':'var(--ok)';log('بطارية '+v+'%','i')}
