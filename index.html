@@ -1,282 +1,190 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWA SprintFit | المنصة السيبرانية-الحيوية</title>
-    <style>
-        :root { 
-            --bg-color: #0b0f19; 
-            --card-bg: #131c2e; 
-            --accent-blue: #0ea5e9; 
-            --accent-glow: rgba(14, 165, 233, 0.3);
-            --danger: #f43f5e; 
-            --success: #10b981; 
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
-            background: var(--bg-color); 
-            color: var(--text-main); 
-            padding: 15px; 
-            margin: 0; 
-            text-align: center; 
-            padding-bottom: 90px;
-        }
-        .container { max-width: 420px; margin: 0 auto; }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
-        .header h1 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: 0.5px; }
-        .battery-badge { background: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--success); display: flex; align-items: center; gap: 4px; }
-
-        /* الصفحات */
-        .page { display: none; text-align: right; }
-        .page.active { display: block; }
-
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            padding: 18px; 
-            border-radius: 20px; 
-            margin-bottom: 14px; 
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
-        }
-        
-        .connection-box { display: flex; align-items: center; justify-content: space-between; }
-        .status-info h3 { margin: 0 0 4px 0; font-size: 15px; }
-        .status-info p { margin: 0; font-size: 11px; color: var(--text-muted); }
-        .dot { width: 12px; height: 12px; background: var(--danger); border-radius: 50%; transition: 0.3s; box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1); }
-        .dot.active { background: var(--success); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15); }
-
-        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-        .metric-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 12px; border-radius: 14px; text-align: center; }
-        .metric-card span { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px; }
-        .metric-card strong { font-size: 16px; color: var(--accent-blue); }
-
-        button { 
-            background: linear-gradient(135deg, #0ea5e9, #2563eb); 
-            color: white; 
-            border: none; 
-            padding: 12px; 
-            width: 100%; 
-            border-radius: 12px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            margin-top: 10px; 
-            transition: 0.2s; 
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
-        button:active { transform: scale(0.98); }
-
-        .terminal { background: #07090e; color: #38bdf8; font-family: ui-monospace, monospace; font-size: 11px; text-align: left; padding: 10px; border-radius: 10px; height: 110px; overflow-y: auto; direction: ltr; border: 1px solid rgba(255,255,255,0.03); }
-
-        /* شريط التنقل السفلي الفاخر */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 99;
-        }
-        .nav-item {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            box-shadow: none;
-            margin: 0;
-            width: auto;
-            padding: 0;
-        }
-        .nav-item.active { color: var(--accent-blue); }
-        .nav-item span.icon { font-size: 18px; }
-
-        .modal { display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.9); z-index: 999; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--card-bg); border: 2px solid var(--danger); padding: 25px; border-radius: 24px; text-align: center; max-width: 320px; }
-        .countdown { font-size: 48px; font-weight: 800; color: var(--danger); margin: 10px 0; font-family: monospace; }
-        .settings-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f7f7f7">
+<title>SprintFit</title>
+<style>
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+:root{--g:#1de27a;--r:#ff5a5f;--b:#0fc4ff;--p:#6a2ee8;--k:#f87bff;--m:#9a9a9a;--t:#222}
+html,body{height:100%;background:#f7f7f7;color:var(--t);font-family:-apple-system,"SF Pro Display",system-ui,sans-serif;overflow:hidden}
+#app{max-width:430px;margin:0 auto;height:100dvh;position:relative;overflow:hidden}
+.pg,#sub{position:absolute;inset:0 0 74px;overflow-y:auto;padding:calc(env(safe-area-inset-top) + 8px) 0 24px;display:none;-webkit-overflow-scrolling:touch}
+.pg.on{display:block}
+#sub{inset:0;background:#f7f7f7;z-index:6;padding-bottom:30px}
+.pad{padding:0 16px}h1{font-size:28px;font-weight:800;padding:10px 16px 0}.sd{color:var(--m);font-size:16px;padding:0 16px;margin-top:2px}
+.card{background:#fff;border-radius:28px;margin:0 0 16px;padding:20px 20px}.card.f{border-radius:28px 28px 0 0;margin-bottom:0}
+.card.gr{background:linear-gradient(#e9fff3,#fff 55%)}
+.card h2{font-size:23px;font-weight:800;margin-bottom:12px}
+.seg{display:flex;justify-content:space-between;padding:14px 16px 10px;position:relative}
+.seg b{flex:1;text-align:center;font-size:19px;color:var(--m);padding:12px 0;border-radius:14px;font-weight:700}
+.seg b.on{background:var(--g);color:#fff;box-shadow:0 8px 20px rgba(29,226,122,.35);max-width:80px;margin-right:auto}
+.seg.pu b.on{background:var(--p);box-shadow:0 8px 20px rgba(106,46,232,.35)}
+.seg b{max-width:80px}.seg{gap:0}.seg b:nth-child(2){margin:0 auto}.seg b:nth-child(3){margin-left:auto;margin-right:24px}
+.row3{display:flex;justify-content:space-around;text-align:center;margin-top:18px}
+.st .sl{color:var(--m);font-size:17px;font-weight:600}.st .sv{font-size:28px;font-weight:800;margin:6px 0;display:flex;gap:8px;align-items:center;justify-content:center}
+.sv svg{width:22px;height:22px}
+.ah{display:flex;align-items:center;gap:12px;margin-bottom:8px}.ai{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#17ea6e,#10d79a);display:flex;align-items:center;justify-content:center}
+.ai svg{width:26px;height:26px}.ah b{font-size:25px;font-weight:800}.ah small{display:block;color:#c8c8c8;font-size:14px;font-weight:600;margin-top:2px}
+.wk{display:flex;justify-content:space-between;margin:18px 0 6px;text-align:center}.wk div{font-size:14px;color:var(--m);font-weight:700;display:flex;flex-direction:column;gap:8px;align-items:center}
+.wk div.on{color:#fff}.wk div.on span{background:var(--g);padding:3px 11px;border-radius:99px}
+.big{font-size:70px;font-weight:800;line-height:1}.big small,.mid small{font-size:18px;font-weight:600}
+.mid{font-size:42px;font-weight:800}.c{text-align:center}.v{display:flex;align-items:center;gap:6px}
+.wr{display:flex;justify-content:space-around;margin-top:20px;font-size:17px}.wr div{display:flex;flex-direction:column;gap:2px;align-items:center}
+.wr .l{display:flex;align-items:center;gap:6px;font-size:26px;font-weight:800}.wr .l i{width:34px;height:34px;border-radius:50%;background:#ffe9df;display:inline-block;border:8px solid #ffe9df;position:relative}
+.wr .l i:after{content:"";position:absolute;inset:-1px;border-radius:50%;background:#ff7a45}
+.sub2{color:#9a9a9a;font-size:20px;margin:2px 0 14px}
+.tile{display:flex;justify-content:space-between;gap:12px;margin-top:6px}.tile>div{flex:1;background:#f7f7f7;border-radius:20px;padding:16px;min-height:96px}
+.tile small{color:#555;font-size:17px;display:block;margin-bottom:12px}.tile b{font-size:34px;font-weight:800}.tile b i{font-size:18px;font-style:normal;font-weight:600}
+.lg{display:flex;justify-content:space-between;font-size:17px;color:#777;margin:12px 0 4px}.lg i{display:inline-block;width:16px;height:16px;border-radius:50%;margin-right:7px;vertical-align:-2px}
+.xl{display:flex;justify-content:space-between;color:#222;font-size:17px;font-weight:600}
+.bar{height:26px;border-radius:99px;background:linear-gradient(90deg,#9cc6ee,#d6b6e6 50%,#5a12e0);position:relative;margin:30px 0 14px}.bar:after{content:"";position:absolute;top:2px;left:var(--x);width:44px;height:44px;margin-top:-9px;border-radius:50%;background:rgba(255,255,255,.9)}
+.rt{display:flex;justify-content:space-between;font-weight:700;font-size:18px}.rt span{color:#aaa;font-weight:600}
+.hd{display:flex;justify-content:space-between;align-items:center}.q{width:42px;height:42px;border-radius:50%;background:#ddd;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px 16px}.grid2 .card{margin:0;text-align:center;padding:30px 10px}
+.grid2 .card b{display:block;font-size:26px;margin-top:20px;font-weight:600}.grid2 small{color:var(--m);font-size:20px;font-weight:600}
+.ph{height:248px;border-radius:26px;position:relative;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;font-size:25px;font-weight:800;line-height:1.2}.ph small{font-size:22px;font-weight:600;margin-top:6px}
+nav{position:absolute;left:0;right:0;bottom:0;height:74px;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:flex-start;padding:14px 0 0;z-index:5}
+nav button{background:none;border:0;width:60px;height:46px;color:#c4c4c4;display:flex;justify-content:center}nav button.on{color:var(--g)}nav svg{width:34px;height:34px;fill:currentColor}
+.dev{background:#fff;border-radius:0 0 28px 28px;padding:24px 22px 22px;display:flex;justify-content:space-between;margin-bottom:16px}
+.dev h1{padding:0;font-size:54px;line-height:1.05;font-weight:800;max-width:230px;word-break:break-all}.dev p{margin-top:8px;font-size:21px;letter-spacing:.3px}
+.bt{display:inline-block;background:#eee;color:#999;font-weight:700;padding:20px 30px;border-radius:14px;font-size:24px;margin-top:20px}.bt.gn{background:var(--g);color:#fff}
+.menu{background:#fff;border-radius:28px 28px 0 0;padding:0 20px;margin-top:16px}.mi{display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid #ececec;font-size:27px;font-weight:500}.mi:last-child{border:0}
+.mi i{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:28px;flex:none}
+.back{padding:calc(env(safe-area-inset-top) + 14px) 18px 6px;font-size:40px;line-height:1;color:#222}
+.set{background:#fff;border-radius:28px;margin-bottom:16px;padding:6px 20px}.sr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:1px solid #eee;font-size:25px}.sr:last-child{border:0}
+.sr small{display:block;color:#999;font-size:17px;font-weight:500;margin-top:4px}.sr em{color:#999;font-style:normal;font-size:20px}.sr em:after{content:" ›";font-size:34px;color:#888;vertical-align:-3px}
+.tg{width:66px;height:44px;border-radius:99px;background:#e6e6e6;position:relative;flex:none;transition:.2s}.tg:after{content:"✕";position:absolute;left:3px;top:3px;width:38px;height:38px;border-radius:50%;background:#fff;color:#ccc;font-size:18px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.tg.on{background:var(--g)}.tg.on:after{content:"✓";left:25px;color:var(--g);border:2px solid var(--g)}
+.ic{width:46px;height:46px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;margin-right:16px}.sr .n{display:flex;align-items:center}
+.pf{display:flex;justify-content:space-between;padding:34px 0;border-bottom:1px solid #e6e6e6;font-size:31px}.pf b{color:var(--g);font-weight:600}
+.gs{display:flex;justify-content:space-between;align-items:center;padding:30px 0;border-bottom:1px solid #eee;font-size:27px}.gs .bx{border:3px solid var(--g);color:var(--g);border-radius:12px;padding:6px 26px;font-size:42px;margin-right:12px}.gs em{color:var(--g);font-style:normal;font-size:27px}
+.fh{display:flex;justify-content:space-between;align-items:center;height:162px;font-size:29px;border-bottom:1px solid #eee}.ct{text-align:center;padding-top:150px}.btn{display:block;background:var(--g);color:#fff;font-size:28px;font-weight:700;padding:30px;border-radius:26px;margin:0 28px;text-align:center;box-shadow:0 8px 24px rgba(29,226,122,.25)}
+#log{background:#04140b;color:#7dffb4;font:12px/1.7 ui-monospace,Menlo,monospace;height:220px;overflow-y:auto;border-radius:14px;padding:10px;direction:ltr}
+#modal{position:fixed;inset:0;background:rgba(60,0,10,.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:99;color:#fff;text-align:center;padding:30px}#modal.on{display:flex}
+#cd{font-size:110px;font-weight:900;color:#ff5a5f}#modal button{font-size:26px;padding:20px 50px;border:0;border-radius:20px;background:var(--g);color:#fff;font-weight:800;margin-top:20px}
+#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 20px;border-radius:99px;font-size:15px;opacity:0;transition:.3s;z-index:50;pointer-events:none;white-space:nowrap}#toast.on{opacity:1}
+</style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header">
-        <h1>PAWA SprintFit</h1>
-        <div class="battery-badge">⚡ <span id="batteryLevel">--%</span></div>
-    </div>
-    
-    <!-- 1. صفحة لوحة القيادة الرئيسية -->
-    <div id="page-dashboard" class="page active">
-        <div class="card">
-            <div class="connection-box">
-                <div class="status-info">
-                    <h3 id="statusText">السوار غير متصل</h3>
-                    <p id="bioState">جاهز للمسح الضوئي والبلوتوث</p>
-                </div>
-                <span id="statusDot" class="dot"></span>
-            </div>
-            <button id="connectBtn">ربط السوار الحصري (BLE)</button>
-        </div>
-
-        <div class="card">
-            <h3 style="margin-top: 0; font-size: 14px; color: var(--text-muted);">المؤشرات الحيوية المباشرة</h3>
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <span>نبض القلب (HR)</span>
-                    <strong id="hrValue">--</strong> <span style="font-size:10px; display:inline;">BPM</span>
-                </div>
-                <div class="metric-card">
-                    <span>مستوى التوتر (HRV)</span>
-                    <strong id="stressValue">متزن</strong>
-                </div>
-            </div>
-            <p id="contextState" style="font-size: 12px; color: var(--accent-blue); margin-top: 12px; margin-bottom: 0; text-align: center;">🛡️ السياق: الوضع الطبيعي الآمن</p>
-        </div>
-    </div>
-
-    <!-- 2. صفحة المميزات -->
-    <div id="page-features" class="page">
-        <div class="card">
-            <h3 style="margin-top: 0; font-size: 15px; color: var(--accent-blue);">🧠 الذكاء الصامت والتعلم</h3>
-            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">يتعلم النظام روتينك اليومي بصمت، ويميز تماماً بين خلع السوار على الطاولة وبين توقف النبض الحقيقي لمنع أي إنذار كاذب.</p>
-        </div>
-        <div class="card">
-            <h3 style="margin-top: 0; font-size: 15px; color: var(--accent-blue);">⚡ الأبجدية الاهتزازية</h3>
-            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">إرسال اهتزازات مميزة لكل حالة (إجهاد خفيف، توتر متوسط، أو إنذار الطوارئ القصوى بـ 30 ثانية).</p>
-        </div>
-    </div>
-
-    <!-- 3. صفحة الإعدادات والسجل -->
-    <div id="page-settings" class="page">
-        <div class="card">
-            <h3 style="margin-top: 0; font-size: 15px; margin-bottom: 15px;">إعدادات الدرع الحيوي</h3>
-            <div class="settings-item">
-                <span>التعلم الذاتي الصامت</span>
-                <input type="checkbox" checked style="accent-color: var(--accent-blue); width: 18px; height: 18px;">
-            </div>
-            <div class="settings-item">
-                <span>حماية الخط الأحمر للطوارئ</span>
-                <input type="checkbox" checked style="accent-color: var(--accent-blue); width: 18px; height: 18px;">
-            </div>
-        </div>
-        <div class="card">
-            <h3 style="margin-top: 0; font-size: 14px; color: var(--text-muted);">سجل التشغيل والذكاء الصامت</h3>
-            <div id="logBox" class="terminal">[SYSTEM]: واجهة التطبيق جاهزة للربط الفعلي...</div>
-        </div>
-    </div>
-
-</div>
-
-<!-- شريط التنقل السفلي -->
-<nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchPage('dashboard', this)">
-        <span class="icon">📊</span>
-        <span>الرئيسية</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('features', this)">
-        <span class="icon">✨</span>
-        <span>المميزات</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('settings', this)">
-        <span class="icon">⚙️</span>
-        <span>الإعدادات</span>
-    </button>
+<div id="app">
+<div class="pg on" id="p0"></div><div class="pg" id="p1"></div><div class="pg" id="p2"></div><div class="pg" id="p3"></div><div class="pg" id="p4"></div>
+<div id="sub"></div>
+<nav id="nav">
+<button class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><circle cx="17" cy="7" r="4"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></button>
+<button><svg viewBox="0 0 24 24"><circle cx="15" cy="4" r="2.3"/><path d="M12 7l-4 2-2 4 1.6.8L9 11l2 1-3 5-4 3 1 1.4 5-2.6 2-3 2 3v5h2v-6l-2.4-3.6 1.4-3 3 2.6 1.2-1.4-4-4z"/></svg></button>
+<button><svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/><path d="M17 3l.8 1.7L19.5 5.5l-1.7.8L17 8l-.8-1.7L14.5 5.5l1.7-.8z"/></svg></button>
+<button><svg viewBox="0 0 24 24"><path d="M4 20c0-9 5-15 16-15 0 11-6 16-14 16l-1.5 2-1.5-1 2-2.5C5 19 4 20 4 20z"/></svg></button>
+<button><svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="4.5"/><path d="M3 21c0-4.5 4-7 9-7s9 2.500 9 7z"/></svg></button>
 </nav>
-
-<!-- نافذة الطوارئ القصوى -->
-<div id="emergencyModal" class="modal">
-    <div class="modal-content">
-        <h2 style="color: var(--danger); margin-top:0;">⚠️ تنبيه طوارئ قصوى</h2>
-        <p style="font-size: 13px; color: var(--text-muted);">تم رصد توقف خطير في المؤشرات الحيوية مع ثبات الجهاز!</p>
-        <div id="countdownTimer" class="countdown">30</div>
-        <p style="font-size: 12px; color: var(--text-muted);">سيتم إرسال نداء استغاثة تلقائياً ما لم تؤكد أنك بخير.</p>
-        <button onclick="cancelEmergency()" style="background: var(--success); margin-top: 15px;">أنا بخير (إلغاء الإنذار)</button>
-    </div>
 </div>
-
+<div id="modal"><div style="font-size:60px">🚨</div><h2 dir="rtl">لم نعد نلتقط نبضك!</h2><p id="mr" dir="rtl" style="color:#ffb3bf;margin:8px 0"></p><div id="cd">30</div><p dir="rtl" style="color:#ffb3bf">ثانية قبل إرسال الاستغاثة مع موقعك</p><button onclick="cancelEm()" dir="rtl">أنا بخير</button></div>
+<div id="toast"></div>
 <script>
-let bleDevice = null;
-let bleServer = null;
-
-const connectBtn = document.getElementById('connectBtn');
-const statusDot = document.getElementById('statusDot');
-const statusText = document.getElementById('statusText');
-const logBox = document.getElementById('logBox');
-const bioState = document.getElementById('bioState');
-const hrValue = document.getElementById('hrValue');
-const batteryLevel = document.getElementById('batteryLevel');
-
-function log(msg) {
-    const time = new Date().toLocaleTimeString();
-    if (logBox) {
-        logBox.innerHTML += `[${time}] ${msg}<br>`;
-        logBox.scrollTop = logBox.scrollHeight;
-    }
-}
-
-// نظام التنقل بين الصفحات
-function switchPage(pageId, btnElement) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(`page-${pageId}`).classList.add('active');
-    
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    btnElement.classList.add('active');
-}
-
-// الاتصال الحقيقي بالسوار (الكود الأصلي الناجح)
-connectBtn.addEventListener('click', async () => {
-    try {
-        log("جاري مسح الأجهزة القريبة (BLE 5.1)...");
-        bleDevice = await navigator.bluetooth.requestDevice({
-            acceptAllDevices: true,
-            optionalServices: ['generic_access', 'heart_rate', 'battery_service']
-        });
-
-        const deviceName = bleDevice.name || 'PWSWFTB30';
-        log(`تم التعرف على الجهاز: ${deviceName}`);
-        
-        bleServer = await bleDevice.gatt.connect();
-        
-        statusDot.classList.add('active');
-        statusText.innerText = "متصل بنجاح (نشط)";
-        connectBtn.innerText = "متصل بالمنصة";
-        hrValue.innerText = "72";
-        batteryLevel.innerText = "85%";
-        log("تم إحكام الاستحواذ الحصري على السوار بنجاح.");
-
-        bleDevice.addEventListener('gattserverdisconnected', handleDisconnection);
-
-    } catch (err) {
-        log(`خطأ في الاتصال: ${err}`);
-    }
-});
-
-function handleDisconnection() {
-    statusDot.classList.remove('active');
-    statusText.innerText = "فصل الاتصال";
-    connectBtn.innerText = "ربط السوار الحصري (BLE)";
-    hrValue.innerText = "--";
-    batteryLevel.innerText = "--%";
-    log("⚠️ انقطع اتصال البلوتوث بالسوار.");
-}
-
-function cancelEmergency() {
-    document.getElementById('emergencyModal').style.display = 'none';
-    log("✅ تم إلغاء إنذار الطوارئ بناءً على استجابتك الفورية.");
-}
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const G='#1de27a',R='#ff5a5f',B='#0fc4ff',P='#6a2ee8',K='#f87bff',MG='#0fffa0';
+const D={steps:2960,cal:202,dur:23,gs:8000,gc:300,gd:30};
+const S=Object.assign({call:1,msg:1,mail:0,fb:0,ig:1,line:0,qq:0,wechat:0,wa:1,x:0,oth:0,move:1,lowb:1,stress:1,whr:0,spo:1,mens:1,exday:0,red:1,thr:20,num:'',iv:'30Min',vib:'Soft'},JSON.parse(localStorage.getItem('sf')||'{}'));
+const sv=()=>{try{localStorage.setItem('sf',JSON.stringify(S))}catch(e){}};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)};
+const log=m=>{const l=$('#log');if(l){l.insertAdjacentHTML('beforeend',`[${new Date().toLocaleTimeString('en-GB')}] ${m}<br>`);l.scrollTop=l.scrollHeight}(log.h=log.h||[]).push(m)};
+/* ---------- drawing helpers ---------- */
+const ring=(a,s=280)=>`<svg viewBox="0 0 280 280" width="${s}" height="${s}" style="display:block;margin:auto">`+[[125,G,a[0]],[100,R,a[1]],[75,B,a[2]]].map(([r,c,v])=>{const L=2*Math.PI*r;return `<circle cx="140" cy="140" r="${r}" fill="none" stroke="#eee" stroke-width="22"/><circle cx="140" cy="140" r="${r}" fill="none" stroke="${c}" stroke-width="22" stroke-linecap="round" stroke-dasharray="${L*Math.min(v,1)} ${L}" transform="rotate(-90 140 140)"/>`}).join('')+'</svg>';
+const rr=[D.steps/D.gs,D.cal/D.gc,D.dur/D.gd];
+const FT='<svg viewBox="0 0 24 24"><ellipse cx="7" cy="14" rx="3" ry="5" fill="'+G+'"/><ellipse cx="16" cy="9" rx="3" ry="5" fill="'+G+'"/></svg>';
+const FL='<svg viewBox="0 0 24 24"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 3-6 1 2 2 2 2 2 0-3-1-5 1-8z" fill="'+R+'"/></svg>';
+const CK='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="'+B+'"/><path d="M12 6v6h5" stroke="#fff" stroke-width="2.500" fill="none"/></svg>';
+const st3=()=>`<div class="row3"><div class="st"><div class="sl">Steps</div><div class="sv">${FT}${D.steps}</div><div class="sl">/${D.gs} steps</div></div><div class="st"><div class="sl">Calories</div><div class="sv">${FL}${D.cal}</div><div class="sl">/${D.gc} kCal</div></div><div class="st"><div class="sl">Duration</div><div class="sv">${CK}${D.dur}</div><div class="sl">/${D.gd} Min</div></div></div>`;
+const seg=(c='')=>`<div class="seg ${c}"><b class="on">Day</b><b>Week</b><b>Month</b></div>`;
+const sm=pts=>{let d=`M${pts[0][0]},${pts[0][1]}`;for(let i=0;i<pts.length-1;i++){const a=pts[i-1]||pts[i],b=pts[i],c=pts[i+1],e=pts[i+2]||c;d+=` C${b[0]+(c[0]-a[0])/6},${b[1]+(c[1]-a[1])/6} ${c[0]-(e[0]-b[0])/6},${c[1]-(e[1]-b[1])/6} ${c[0]},${c[1]}`}return d};
+const area=(pts,col,fill,h=120,w=340)=>{const d=sm(pts);return `<svg viewBox="0 0 ${w} ${h}" width="100%"><defs><linearGradient id="a${col.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${fill}" stop-opacity=".5"/><stop offset="1" stop-color="${fill}" stop-opacity="0"/></linearGradient></defs><path d="${d} L${w},${h} L0,${h}Z" fill="url(#a${col.slice(1)})"/><path d="${d}" fill="none" stroke="${col}" stroke-width="3"/></svg>`};
+const ws=['Sat','Sun','Mon','Tue','Wed','Thu','Fri'],wd=[[.3,.8,.8],[.15,.9,.9],[.2,1,1],[.2,1,1],[.2,1,1],[1,1,1],rr];
+const hrBars=()=>{const a=[[.1,430],[5,40],[10.2,300],[10.8,480],[11.4,480],[12,582],[12.6,200],[13.1,330],[13.6,290]];return `<svg viewBox="0 0 340 170" width="100%"><g stroke="#eee" stroke-dasharray="3 4">${[10,52,94].map(y=>`<line x1="28" x2="340" y1="${y}" y2="${y}"/>`).join('')}</g><line x1="28" x2="340" y1="132" y2="132" stroke="${G}" stroke-width="2"/>${a.map(([x,v])=>`<rect x="${30+x*12.3}" y="${132-v/582*122}" width="4" height="${v/582*122}" rx="2" fill="${G}"/>`).join('')}<g fill="#bbb" font-size="12"><text x="0" y="14">582</text><text x="0" y="56">388</text><text x="0" y="98">194</text><text x="8" y="136">0</text>${['00:00','06:00','12:00','18:00','24:00'].map((t,i)=>`<text x="${14+i*78}" y="160">${t}</text>`).join('')}</g></svg>`};
+const stages=()=>{const L='2223322112223322210022233332200122223311222002223322',c=[MG,B,K,P],y=[0,34,64,98];return `<svg viewBox="0 0 340 150" width="100%">`+[...L].map((v,i)=>`<rect x="${i*6.4}" y="${y[v]}" width="5.600" height="${v==0?40:52}" rx="3" fill="${c[v]}"/>`).join('')+`</svg>`};
+const lgs=`<div class="lg"><span><i style="background:${P}"></i>Deep</span><span><i style="background:${K}"></i>Light</span><span><i style="background:${B}"></i>REM</span><span><i style="background:${MG}"></i>Awake</span></div>`;
+const trend=()=>{const d=[[55,190,75,28,35],[10,105,45,25,0],[25,95,50,15,0],[55,75,25,18,0],[28,100,85,5,0],[40,125,45,5,65],[52,100,52,105,0]],dts=['10/17','10/18','10/19','10/20','10/21','10/22','10/23'],col=[P,K,B,MG,'#fa9ffc'];return `<svg viewBox="0 0 340 250" width="100%">`+d.map((a,i)=>{let y=205;return a.map((h,j)=>{if(!h)return'';y-=h*.8;return `<rect x="${i*49+12}" y="${y}" width="22" height="${h*.8+(j?0:0)}" rx="${j==0||j==4?11:0}" fill="${col[j]}"/>`}).join('')+`<text x="${i*49+5}" y="238" fill="#999" font-size="14">${dts[i]}</text>`}).join('')+`<line x1="0" x2="340" y1="206" y2="206" stroke="${P}" stroke-width="2"/></svg>`};
+const sp=(a,b)=>`<svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="15" fill="${b}"/><circle cx="17" cy="17" r="5" fill="${a}"/></svg>`;
+/* ---------- pages ---------- */
+const hr=new Date().getHours(),dn=new Date(),mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],dy=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const greet=hr<12?'MORNING':hr<18?'AFTERNOON':'EVENING';
+const dstr=`${dn.getDate()} ${mo[dn.getMonth()]}. ${dy[dn.getDay()]}`,dfull=`${dn.getDate()} ${mo[dn.getMonth()]}. ${dn.getFullYear()}, ${dy[dn.getDay()]}`;
+const P0=()=>`<div class="pad"><div style="margin-top:44px;font-size:19px">${dstr}</div><div style="font-size:50px;font-weight:800;line-height:1.1;margin:10px 0 28px">GOOD<br>${greet}!</div>
+<div class="card gr"><div class="ah"><div class="ai"><svg viewBox="0 0 24 24"><circle cx="15" cy="4" r="2.300" fill="#fff"/><path fill="#fff" d="M12 7l-4 2-2 4 1.600.8L9 11l2 1-3 5-4 3 1 1.400 5-2.600 2-3 2 3v5h2v-6l-2.400-3.600 1.400-3 3 2.600 1.200-1.400-4-4z"/></svg></div><div><b>Activity</b><small>${dfull}, ${String(hr%12||12).padStart(2,'0')}:30 ${hr<12?'AM':'PM'}</small></div></div>${ring(rr,190)}${st3()}</div>
+<div class="card gr" style="min-height:330px"><div class="ah"><div class="ai" style="background:linear-gradient(135deg,#2ad07a,#3ce790)"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 4h9l9 9-8 8-9-9z"/></svg></div><b>Daily Tag</b></div><div class="c" style="margin-top:34px"><svg width="110" viewBox="0 0 100 100"><path d="M50 8l38 28-14 46H26L12 36z" fill="#dcdfdf"/><path d="M50 22l26 20-9 32H33l-9-32z" fill="#fff"/><path d="M50 40l12 9-4 14H42l-4-14z" fill="#e8e8e8"/></svg><div style="color:#aaa;font-size:31px;font-weight:800;margin-top:36px;line-height:1.3">Please fill in the<br>Daily Tags</div></div></div></div>`;
+const P1=()=>`<h1>Activity</h1><div class="sd">${dfull}</div>${seg()}<div class="card f"><div style="font-size:23px;font-weight:800;margin-bottom:6px">Goals Of Last 7 Days</div><div class="wk">${ws.map((d,i)=>`<div class="${i==6?'on':''}"><span>${d}</span>${ring(wd[i],40)}</div>`).join('')}</div><div style="margin-top:16px">${ring(rr,230)}</div>${st3()}</div>
+<div class="card" style="margin-top:16px"><h2>Workout Records</h2><div class="wr"><div><div class="l"><i></i>-- <small style="font-size:17px;font-weight:600">Times</small></div>Total Times</div><div><div class="l"><i></i>-- <small style="font-size:17px;font-weight:600">kCal</small></div>Total calories</div><div><div class="l"><i></i>-- <small style="font-size:17px;font-weight:600">Min</small></div>Total duration</div></div></div>
+<div class="card"><h2 style="margin-bottom:4px">Beyond 22% People Go Farther</h2><div class="sub2">Comparison with Male users in the same age</div><svg viewBox="0 0 340 170" width="100%">${[100,78,72,60,50,42,32].map((h,i)=>`<rect x="${i*48+10}" y="${145-h*1.35}" width="14" height="${h*1.35}" rx="7" fill="${i?'#d3f6e3':G}"/>`).join('')}<line x1="0" x2="340" y1="146" y2="146" stroke="${G}" stroke-width="2"/></svg><div class="xl" style="font-size:14px;color:#888">${['0|3000','3001|6000','6001|9000','9001|12000','12001|15000','15001|18000','18001|∞'].map(x=>`<span style="text-align:center;font-size:12px">${x.split('|')[0]}<br>|<br>${x.split('|')[1]}</span>`).join('')}</div></div>
+<div class="c" style="font-size:60px;font-weight:800;margin-top:30px">${D.steps}<small style="font-size:20px;font-weight:600">steps</small></div><div class="c" style="font-size:19px;margin:6px 0 24px">${dfull}</div>
+<div class="row3" style="font-size:36px;font-weight:800"><div class="v">${'<svg width="30" viewBox="0 0 24 24"><path d="M3 12l5-5v3h8V7l5 5-5 5v-3H8v3z" fill="'+G+'"/></svg>'}2.19</div><div class="v">${FL.replace('<svg','<svg width="30"')}${D.cal}</div><div class="v">${CK.replace('<svg','<svg width="30"')}${D.dur}</div></div><div class="row3" style="margin-top:2px;font-weight:700"><span>km</span><span>kCal</span><span>Min</span></div>
+<div class="pad" style="margin-top:14px">${hrBars()}</div>
+<div class="card" style="margin-top:24px"><h2>Volume Of Physical Activity</h2><div style="font-size:23px;font-weight:600">This week you accumulated <b style="font-size:42px">201</b> MET-min</div><div class="sub2" style="margin-top:14px">Recommended effective MET-min is 600-1000</div><div class="c mid" style="font-size:80px;margin-top:20px">${D.dur}<small>MET-min</small></div></div>`;
+const P2=()=>`<h1>Sleep</h1>${seg('pu')}<div class="card f"><div style="color:#999;font-size:20px">Time asleep</div><div style="font-size:82px;font-weight:800;line-height:1.1">05<small style="font-size:26px">h</small>40<small style="font-size:26px">m</small><span style="float:right;font-size:18px;font-weight:600;margin-top:36px">${dfull}</span></div>
+<div class="row3"><div class="st"><div class="sl">Time in bed</div><div style="font-size:34px;font-weight:800;margin-top:8px">08<small style="font-size:18px"> h </small>10<small style="font-size:18px"> m</small></div></div><div class="st"><div class="sl">Nap</div><div style="font-size:34px;font-weight:800;margin-top:8px">--<small style="font-size:18px"> h </small>--<small style="font-size:18px"> m</small></div></div><div class="st"><div class="sl">Total sleep time</div><div style="font-size:34px;font-weight:800;margin-top:8px">05<small style="font-size:18px"> h </small>40<small style="font-size:18px"> m</small></div></div></div>${lgs}<div style="margin-top:6px">${stages()}</div><div class="xl"><span>01:45</span><span>09:55</span></div></div>
+<div class="card" style="border-radius:28px"><h2>Sleep Quality Score</h2><div class="c" style="font-size:96px;font-weight:800">70<small style="font-size:24px"> Score</small></div><div class="bar" style="--x:40%"></div><div class="rt">Poor<span>60</span>Medium<span>75</span>Good<span>90</span>Excellent</div></div>
+<div class="card"><div class="tile"><div><small>◉ Awake time</small><b>2<i>Hour</i>30<i>Min</i></b></div><div><small>☾ Sleep latency</small><b>3<i>Min</i></b></div></div><div class="tile"><div><small>☾ Sleep efficiency</small><b>69<i>%</i></b></div><div><small>⏱ Timing</small><b>Poor</b></div></div></div>
+<div class="card"><h2>Sleep Ratio</h2><div style="display:flex;gap:16px;align-items:center"><svg viewBox="0 0 120 120" width="140"><g fill="none" stroke-width="24" transform="rotate(-90 60 60)"><circle cx="60" cy="60" r="46" stroke="${P}" stroke-dasharray="75 289"/><circle cx="60" cy="60" r="46" stroke="${K}" stroke-dasharray="145 289" stroke-dashoffset="-75" /><circle cx="60" cy="60" r="46" stroke="${B}" stroke-dasharray="69 289" stroke-dashoffset="-220"/></g></svg><div style="flex:1;font-size:17px">${[['Deep',P,26,'01 Hour 29 Min','20%-60%'],['Light',K,50,'02 Hour 51 Min','<55%'],['REM',B,24,'01 Hour 20 Min','10%-30%']].map(r=>`<div style="display:flex;justify-content:space-between;margin-top:14px"><span><i style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${r[1]};margin-right:8px"></i>${r[0]}</span><span><b style="color:${P};font-size:24px">${r[2]}%</b> <b>${r[3]}</b></span></div><div style="color:#aaa;font-size:15px">Reference Value :${r[4]}</div>`).join('')}</div></div></div>
+<div class="card"><div class="hd"><h2>Average Sleep Heart Rate</h2><div class="q">?</div></div><div class="c big">65<small> BPM</small></div><div class="c" style="font-size:20px;margin:6px 0 20px">Avg HR</div><div style="display:flex;justify-content:space-around;font-size:36px;font-weight:800"><span><b style="color:${R}">⬆</b> 96<small style="font-size:18px"> BPM</small></span><span><b style="color:${R}">⬇</b> 55<small style="font-size:18px"> BPM</small></span></div><div style="display:flex;justify-content:space-around;font-size:19px"><span>Max HR</span><span>Min HR</span></div>${area([[0,70],[30,40],[50,75],[80,50],[110,48],[130,75],[150,10],[170,100],[190,110],[215,100],[240,60],[270,55],[300,45],[340,70]].map(p=>[p[0],p[1]]),R,'#ff4560',130)}<div class="xl"><span>01:45</span><span>09:55</span></div></div>
+<div class="card"><h2>Average HRV</h2><div class="c big">19<small> ms</small></div><div class="c" style="font-size:20px;margin:6px 0 20px">Avg HRV</div><div style="display:flex;justify-content:space-around;font-size:36px;font-weight:800"><span><b style="color:#ff7a45">⬆</b> 45<small style="font-size:18px"> ms</small></span><span><b style="color:#ff7a45">⬇</b> 10<small style="font-size:18px"> ms</small></span></div><div style="display:flex;justify-content:space-around;font-size:19px"><span>Max HRV</span><span>Min HRV</span></div></div>
+<div class="card"><h2>Sleep Activity Status</h2><svg viewBox="0 0 340 90" width="100%"><line x1="0" x2="340" y1="45" y2="45" stroke="${P}" stroke-width="3" stroke-dasharray="4 4"/>${[[40,B,40],[54,B,40],[82,B,60],[116,MG,24],[124,MG,24],[146,K,80],[150,K,80],[156,K,80],[170,B,60],[176,MG,36],[182,B,60],[190,MG,36],[198,MG,36],[230,MG,30],[238,MG,30],[258,B,60],[270,B,50],[284,MG,40],[292,MG,40],[300,MG,40],[312,K,70],[322,B,60],[330,B,50]].map(([x,c,h])=>`<rect x="${x}" y="${45-h/2}" width="2.500" height="${h}" fill="${c}"/>`).join('')}</svg><div class="xl" style="color:#bbb"><span>01:45</span><span>09:55</span></div><div class="lg" style="font-size:16px"><span><i style="background:${MG}"></i>little activity</span><span><i style="background:${B}"></i>moderate activity</span><span><i style="background:${K}"></i>frequent activity</span></div></div>
+<div class="card"><div class="hd"><h2>Blood Oxygen during sleep</h2><div class="q">?</div></div><div class="c big">98<small>%</small></div><div class="c" style="font-size:20px;margin:6px 0 10px">Reference Value &gt; 90%</div>${area([[0,70],[25,70],[50,48],[75,70],[95,70],[110,15],[130,10],[150,30],[175,12],[190,25],[210,8],[260,8],[290,28],[310,40],[330,38],[340,25]],'#6b8cf0','#8aa3ff',100)}<div class="xl"><span>01:45</span><span>09:55</span></div></div>
+<div class="card"><h2>Last 7 Days Sleep Trends</h2><div class="c big" style="font-size:80px">05<small>Hour</small>47<small>Min</small></div><div class="c" style="font-size:20px">Avg sleep time</div>${trend()}</div>`;
+const P3=()=>`<h1 style="font-size:34px;padding-top:30px">Meditation</h1><div class="sd" style="font-size:24px;color:#222;margin:20px 0">Good ${hr<12?'Morning':hr<18?'Afternoon':'Evening'}!</div><div class="grid2"><div class="card"><svg width="80" viewBox="0 0 80 60"><path d="M40 4c8 10 10 24 0 44-10-20-8-34 0-44z" fill="#2fb4ff"/><path d="M20 22c10 0 16 12 14 26-12 0-18-12-14-26zM60 22c-10 0-16 12-14 26 12 0 18-12 14-26z" fill="#6ac6ff"/></svg><b>Stressed</b><small>4-4</small></div><div class="card"><svg width="80" viewBox="0 0 80 70"><path d="M52 6a26 26 0 1 0 22 36A22 22 0 0 1 52 6z" fill="${K}"/><circle cx="26" cy="52" r="14" fill="#7e7cf0"/></svg><b>Sleep Aid</b><small>4-7-8</small></div></div>
+<div class="sd" style="font-size:36px;color:#222;margin:10px 0 18px;font-weight:500">Mindfulness</div><div class="grid2" style="grid-template-columns:1fr 1fr">${[['Mindful Breathing','10','#9bb8b8,#7fa3a6'],['Gratitude Guide','5','#d6dae2,#9ba3b0'],['Just Like Me','8','#cfc6c4,#8a98ae'],['Body Scan','8','#dce2e8,#9aa3ad']].map(x=>`<div class="ph" style="background:linear-gradient(#${x[2].split(',')[0].slice(1)},#${x[2].split(',')[1].slice(1)})">${x[0]}<small>🎧 ${x[1]} min</small></div>`).join('')}</div>`;
+const menu=[['notif','🔔','Notifications','#d7f7e3'],['goal','🏆','Goal','#d9f2fd'],['prof','✎','Profile','#d3f4e8'],['oth','⚙','Others','#d9f2fd'],['gest','✋','Gesture Control for Camera','#e4e6fb'],['fw','⬆','Firmware','#fdeed6'],['ah','♥','Apple Health','#fbdada'],['strava','▲','Strava','#fde0d6'],['find','⌕','Find Devices','#fff'],['about','ℹ','About','#fdeed6'],['safe','🚨','Red Line Safety & Log','#ffe0e5']];
+const P4=()=>`<div class="dev"><div><h1 id="dName">PW-SWFTB30</h1><p id="dMac">C4:44:0C:32:BB:FC</p><p id="dSt">Disconnected</p><p id="dBat" style="font-weight:600;display:flex;align-items:center;gap:6px">--% <span style="width:42px;height:20px;border:2px solid #333;border-radius:4px;padding:1px;display:inline-block"><b id="dBar" style="display:block;height:100%;width:0;background:#44d22b"></b></span></p><div id="dLive" style="font-size:17px;color:#777;margin-top:8px"></div><span class="bt" id="dBtn">CONNECT</span></div><svg width="150" viewBox="0 0 150 230" style="margin-top:20px"><path d="M30 10c40-20 90 0 100 40 6 30 0 90-10 120-20 40-90 40-100 0 30 10 60 0 60-60C80 70 60 40 30 10z" fill="#1b1b1b"/><rect x="45" y="25" width="38" height="90" rx="10" fill="#555"/><rect x="82" y="60" width="6" height="18" rx="3" fill="#ff7a22"/></svg></div>
+<div class="menu">${menu.map(m=>`<div class="mi" data-go="${m[0]}"><i style="background:${m[3]}">${m[1]}</i>${m[2]}</div>`).join('')}</div>`;
+const tgl=k=>`<div class="tg ${S[k]?'on':''}" data-k="${k}"></div>`;
+const bk=t=>`<div class="back" data-go="">‹</div>${t?`<div style="text-align:center;font-size:30px;font-weight:800;margin-top:-44px;margin-bottom:14px">${t}</div>`:''}`;
+const nl=[['call','Phone Call','#34e05c','☎'],['msg','Messages','#34e05c','💬'],['mail','Mail','#1a9bff','✉'],['fb','Facebook','#1877f2','f'],['ig','Instagram','#d6249f','◎'],['line','Line','#06c755','L'],['qq','QQ','#222','Q'],['wechat','WeChat','#07c160','W'],['wa','WhatsApp','#25d366','✆'],['x','X (Twitter)','#000','X'],['oth','Others','#ccc','▦']];
+const SUB={
+notif:()=>`${bk('Notifications')}<div class="pad"><div class="set"><div style="padding:22px 0 8px;font-size:28px;font-weight:800;color:${G}">🔊 <span style="color:#222">Notifications</span><div style="color:#999;font-size:19px;font-weight:500;margin-top:10px;line-height:1.5">With this feature enabled, your device will vibrate to notify you of new messages.</div></div>${nl.map(n=>`<div class="sr"><span class="n"><span class="ic" style="background:${n[2]}">${n[3]}</span>${n[1]}</span>${tgl(n[0])}</div>`).join('')}</div><div class="set"><div style="font-size:26px;font-weight:800;padding:20px 0">ⓘ Indicator Light Instructions</div>${[['Notification','Green light flashing'],['Incoming Call','Green light flashing'],['Low Battery Reminder','Red light flashing'],['Find Devices','Multi-color Light Flashing']].map(x=>`<div class="sr" style="font-size:27px;font-weight:700"><div>${x[0]}<small style="font-size:23px;font-weight:500">${x[1]}</small></div></div>`).join('')}</div></div>`,
+prof:()=>`${bk('')}<div class="pad"><h1 style="padding:20px 0 6px;font-size:52px">Profile</h1>${[['Gender','Male'],['Height','178cm'],['Weight','63kg'],['Birthday','May 24, 2008'],['Step Length','74cm']].map(r=>`<div class="pf"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}<div style="color:#999;font-size:20px;margin-top:20px;display:flex;gap:12px">● <span>The estimated stride length estimated based on your height is 72cm.</span></div></div>`,
+goal:()=>`${bk('')}<div class="pad"><h1 style="padding:20px 0 24px;font-size:52px">Goal Setting</h1><div class="set" style="padding:0 20px"><div class="gs"><span>Move</span><span><span class="bx">${D.gs}</span><em>steps</em></span></div><div class="gs"><span>Calories</span><span><span class="bx">${D.gc}</span><em>kCal</em></span></div><div class="gs" style="border:0"><span>Exercise</span><span><span class="bx">00</span><em>hour</em> <span class="bx" style="margin-left:14px">${D.gd}</span><em>Min</em></span></div></div><div class="set"><div class="sr" style="font-size:38px;font-weight:800">Exercise Day Goal${tgl('exday')}</div></div></div>`,
+fw:()=>`${bk('')}<div class="pad"><h1 style="padding:20px 0 24px;font-size:52px">Firmware</h1><div class="set">${['Firmware information','Reset','Upgrade'].map(x=>`<div class="sr" data-n="${x}" style="font-size:27px;font-weight:500"><span>${x}</span><em></em></div>`).join('')}</div></div>`,
+oth:()=>`${bk('')}<div class="pad"><h1 style="padding:20px 0 24px;font-size:52px">Others</h1><div class="set"><div class="sr">Unit format<em>Metric</em></div><div class="sr">Temperature unit<em>Celsius</em></div><div class="sr" data-cy="iv">All-day heart rate/HRV measurement intervals<em>${S.iv}</em></div><div class="sr" data-cy="vib">Vibration intensity<em>${S.vib}</em></div><div class="sr"><div>Reminders To Move<small>If your step count is under 50 within an hour (10:00 AM - 8:00 PM), we'll remind you to move.</small></div>${tgl('move')}</div><div class="sr"><div>Low battery reminder<small>It will remind you to charge when the power is below 5%</small></div>${tgl('lowb')}</div></div>
+${[['stress','All-day Stress','After enabling, the device will automatically record your stress every hour.'],['whr','Workout Heart rate alert','Your heart rate cap defaults to 202 BPM'],['spo','Blood Oxygen during sleep','Blood oxygen monitoring during nighttime sleep consumes more power,which may reduce the device’s battery life.']].map(x=>`<div class="set"><div class="sr" style="font-size:36px;font-weight:800"><div>${x[1]}<small style="font-size:19px;font-weight:500">${x[2]}</small></div>${tgl(x[0])}</div></div>`).join('')}
+<div class="set"><div class="sr" style="font-size:36px;font-weight:800"><div>Alarm<small style="font-size:19px;font-weight:500">When the alarm goes off, the device will vibrate as a reminder.</small></div><em></em></div></div><div class="set"><div class="sr" data-n="off" style="font-size:36px;font-weight:800"><div>Power off your device<small style="font-size:19px;font-weight:500">Press and hold the side button to power on, or connect the charger to power on.</small></div><em></em></div></div><div class="set"><div class="sr" style="font-size:36px;font-weight:800"><div>Menstrual Cycle<small style="font-size:19px;font-weight:500">The menstrual cycle will not be displayed on the home page after closing.</small></div>${tgl('mens')}</div></div></div>`,
+find:()=>`${bk('')}<div class="pad"><h1 style="padding:20px 0;font-size:52px">Find Devices</h1></div><div class="ct"><div style="width:315px;height:315px;margin:0 auto;border-radius:50%;background:#26c96d;display:flex;align-items:center;justify-content:center;color:#fff;font-size:100px">ᛒ</div><div id="fSt" style="font-size:29px;font-weight:800;margin:70px 40px 14px">Not connected. Connect the band first.</div><div style="font-size:24px;margin:0 30px">Click 'Find Now' and the device will issue a prompt.</div></div><div style="position:absolute;bottom:60px;left:0;right:0"><span class="btn" data-n="find">Find Now</span></div>`,
+safe:()=>`<div dir="rtl">${bk('')}<div class="pad"><h1 style="padding:20px 0 14px;font-size:40px">الخط الأحمر والسجل</h1><div class="set"><div class="sr" style="font-size:22px"><div>تفعيل الخط الأحمر<small>لا إنذار عند الخلع أو انقطاع البلوتوث؛ فقط عند ملامسة الجلد + فقدان النبض</small></div>${tgl('red')}</div><div class="sr" style="font-size:22px">مدة فقدان النبض: <b id="thv">${S.thr}</b>s <input type="range" min="10" max="60" value="${S.thr}" id="th" style="accent-color:${G}"></div><div class="sr" style="font-size:22px"><span>رقم الطوارئ</span><input id="ecn" dir="ltr" value="${S.num}" placeholder="+9665XXXXXXXX" style="font-size:20px;padding:10px;border:1px solid #ddd;border-radius:12px;width:60%"></div></div><span class="btn" data-n="test" style="background:${R};margin:0 0 16px;font-size:24px;padding:20px">اختبار نافذة الطوارئ (30 ثانية)</span><div style="color:#888;font-size:16px;margin-bottom:12px;line-height:1.6">المتصفح لا يستطيع الاتصال بالطوارئ الرسمية؛ عند انتهاء العداد يفتح الرسائل برسالة جاهزة فيها موقعك لتضغط «إرسال».</div><div id="log" dir="ltr">${(log.h||[]).map(x=>x+'<br>').join('')}</div></div></div>`
+};
+/* ---------- nav / routing ---------- */
+const PG=[P0,P1,P2,P3,P4];PG.forEach((f,i)=>$('#p'+i).innerHTML=f());
+$$('nav button').forEach((b,i)=>b.onclick=()=>{$$('nav button,.pg').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#p'+i).classList.add('on');$('#sub').style.display='none';$('#p'+i).scrollTop=0});
+const open=n=>{const s=$('#sub');if(!n){s.style.display='none';return}if(!SUB[n])return toast('Not available in the browser');s.innerHTML=SUB[n]();s.style.display='block';s.scrollTop=0;if(n=='safe'){$('#th').oninput=e=>{S.thr=+e.target.value;$('#thv').textContent=S.thr;sv()};$('#ecn').onchange=e=>{S.num=e.target.value.trim();sv()}}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go],.tg,[data-cy],[data-n]');if(!t)return;
+ if(t.dataset.go!==undefined){open(t.dataset.go);return}
+ if(t.classList.contains('tg')){const k=t.dataset.k;S[k]=S[k]?0:1;t.classList.toggle('on');sv();log('setting '+k+'='+S[k]);return}
+ if(t.dataset.cy){const k=t.dataset.cy,o=k=='iv'?['10Min','30Min','60Min']:['Soft','Medium','Strong'];S[k]=o[(o.indexOf(S[k])+1)%3];sv();t.querySelector('em').textContent=S[k];return}
+ const n=t.dataset.n;if(n=='test')trigger('Manual test');else if(n=='find'){if(!st.conn)toast('Connect the band first');else{$('#fSt').textContent='Connected, the device is near your phone.';log('Find Now pressed (needs vendor GATT command to buzz the band)');toast('Vendor-specific command required')}}else toast('Not available in the browser')});
+/* ---------- BLE (real) ---------- */
+const st={dev:null,srv:null,conn:false,hr:0,last:0,contactSup:false,contact:null,lost:0,em:false};
+function upd(){const c=st.conn;$('#dSt').textContent=c?'Connected':'Disconnected';$('#dBtn').textContent=c?'REMOVE':'CONNECT';$('#dBtn').className='bt'+(c?'':' gn');if(st.dev&&st.dev.name)$('#dName').textContent=st.dev.name.toUpperCase()}
+$('#dBtn').onclick=()=>st.conn?disc():connect();
+async function connect(){
+ if(!navigator.bluetooth){toast('Open this page in the Bluefy browser');log('Web Bluetooth unsupported');return}
+ try{log('Scanning BLE...');st.dev=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['generic_access','heart_rate','battery_service',0x1822]})}catch(e){log('Cancelled: '+e.message);return}
+ log('Device: '+(st.dev.name||st.dev.id));st.dev.addEventListener('gattserverdisconnected',onDisc);await link()}
+async function link(){
+ try{st.srv=await st.dev.gatt.connect();st.conn=true;st.last=Date.now();upd();log('GATT connected');
+  try{const s=await st.srv.getPrimaryService('battery_service'),c=await s.getCharacteristic('battery_level'),u=v=>{const p=v.getUint8(0);$('#dBat').firstChild.textContent=p+'% ';$('#dBar').style.width=p+'%'};u(await c.readValue());await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>u(e.target.value));log('Battery OK')}catch(e){log('No standard battery service')}
+  try{const s=await st.srv.getPrimaryService('heart_rate'),c=await s.getCharacteristic('heart_rate_measurement');await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>pHR(e.target.value));log('Heart rate OK')}catch(e){log('No standard HR service: '+e.message)}
+  try{const s=await st.srv.getPrimaryService(0x1822),c=await s.getCharacteristic(0x2A5F);await c.startNotifications();c.addEventListener('characteristicvaluechanged',e=>{const v=e.target.value.getUint16(1,true);let m=v&4095;if(m>=2048)m-=4096;let x=v>>12;if(x>=8)x-=16;st.spo=Math.round(m*10**x);live()});log('SpO2 OK')}catch(e){log('No standard SpO2 service')}
+ }catch(e){log('Connect failed: '+e.message);st.conn=false;upd()}}
+function pHR(dv){const f=dv.getUint8(0);let h=f&1?dv.getUint16(1,true):dv.getUint8(1);st.contactSup=!!(f&4);st.contact=st.contactSup?!!(f&2):null;st.hr=h;st.last=Date.now();live()}
+function live(){$('#dLive').textContent=`♥ ${st.hr||'--'} BPM`+(st.spo?`  ·  SpO₂ ${st.spo}%`:'')}
+function onDisc(){st.conn=false;upd();log('Disconnected (not treated as emergency)');let n=0;const t=async()=>{if(st.conn||n>=6)return;n++;log('Reconnect #'+n);await link();if(!st.conn)setTimeout(t,3000*n)};setTimeout(t,2000)}
+function disc(){const d=st.dev;st.dev=null;if(d&&d.gatt.connected){d.removeEventListener('gattserverdisconnected',onDisc);d.gatt.disconnect()}st.conn=false;upd();log('Removed by user')}
+/* ---------- red line ---------- */
+setInterval(()=>{if(!st.conn){st.lost=0;return}const now=Date.now(),age=(now-st.last)/1000;
+ if(st.contactSup&&st.contact===false){st.lost=0;return}
+ if(st.hr>0&&age<15){st.lost=0;return}
+ if(!st.lost)st.lost=now;const l=(now-st.lost)/1000;if(S.red&&l>=S.thr&&!st.em&&(st.contactSup&&st.contact))trigger('Skin contact with no pulse for '+Math.round(l)+'s')},1000);
+let ac;const beep=()=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=980;o.connect(g);g.connect(ac.destination);g.gain.value=.3;o.start();o.stop(ac.currentTime+.35)}catch(e){}};
+let tm,cnt;function trigger(w){if(st.em)return;st.em=true;cnt=30;$('#cd').textContent=cnt;$('#mr').textContent=w;$('#modal').classList.add('on');log('ALERT: '+w);const k=()=>{navigator.vibrate&&navigator.vibrate([500,150,500]);beep()};k();tm=setInterval(()=>{cnt--;$('#cd').textContent=cnt;k();if(cnt<=0){clearInterval(tm);send()}},1000)}
+function cancelEm(){clearInterval(tm);st.em=false;st.lost=0;$('#modal').classList.remove('on');log('User: I am OK')}
+function send(){const go=l=>{const m='SOS from SprintFit: vital signs stopped.'+(l?' https://maps.google.com/?q='+l:'');if(S.num)location.href='sms:'+S.num+'?&body='+encodeURIComponent(m);else if(navigator.share)navigator.share({text:m}).catch(()=>{});$('#modal').classList.remove('on');st.em=false;st.lost=0};navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>go(p.coords.latitude+','+p.coords.longitude),()=>go(''),{timeout:6000}):go('')}
 </script>
 </body>
 </html>
