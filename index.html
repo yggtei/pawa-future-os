@@ -3,57 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWA Future-OS | النظام السيبراني الحيوي</title>
+    <title>PAWA SprintFit | المنصة السيبرانية-الحيوية</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        :root { --bg: #030712; --card: #0f172a; --accent: #38bdf8; --danger: #ef4444; --success: #22c55e; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: #f8fafc; padding: 15px; margin: 0; text-align: center; }
-        .container { max-width: 450px; margin: 0 auto; }
-        .card { background: var(--card); border: 1px solid #1e293b; padding: 20px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); }
-        .status-badge { display: inline-flex; align-items: center; gap: 8px; background: #1e293b; padding: 6px 14px; border-radius: 20px; font-size: 14px; }
-        .dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: var(--success); box-shadow: 0 0 10px var(--success); }
-        button { background: linear-gradient(135deg, #0284c7, #2563eb); color: white; border: none; padding: 14px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        :root { 
+            --bg-color: #0b0f19; 
+            --card-bg: #131c2e; 
+            --accent-blue: #0ea5e9; 
+            --accent-glow: rgba(14, 165, 233, 0.3);
+            --danger: #f43f5e; 
+            --success: #10b981; 
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
+            background: var(--bg-color); 
+            color: var(--text-main); 
+            padding: 20px; 
+            margin: 0; 
+            text-align: center; 
+        }
+        .container { max-width: 420px; margin: 0 auto; }
+        
+        /* الهيدر على طراز التطبيقات الذكية */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
+        .header h1 { font-size: 20px; margin: 0; font-weight: 700; letter-spacing: 0.5px; }
+        .battery-badge { background: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--success); display: flex; align-items: center; gap: 4px; }
+
+        /* البطاقات الفاخرة */
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            padding: 22px; 
+            border-radius: 24px; 
+            margin-bottom: 16px; 
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
+            text-align: right;
+        }
+        
+        /* دائرية حالة الاتصال الفاخرة */
+        .connection-box { display: flex; align-items: center; justify-content: space-between; }
+        .status-info h3 { margin: 0 0 4px 0; font-size: 16px; }
+        .status-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+        .dot { width: 12px; height: 12px; background: var(--danger); border-radius: 50%; transition: 0.3s; box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1); }
+        .dot.active { background: var(--success); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15); }
+
+        /* شبكة المؤشرات الحيوية (مثل تطبيقات الساعات الأصلية) */
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .metric-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 16px; text-align: center; }
+        .metric-card span { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .metric-card strong { font-size: 18px; color: var(--accent-blue); }
+
+        /* الأزرار العصرية */
+        button { 
+            background: linear-gradient(135deg, #0ea5e9, #2563eb); 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            width: 100%; 
+            border-radius: 14px; 
+            font-size: 15px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-top: 12px; 
+            transition: 0.2s; 
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
         button:active { transform: scale(0.98); }
-        .terminal { background: #020617; color: #38bdf8; font-family: monospace; font-size: 12px; text-align: left; padding: 12px; border-radius: 10px; height: 120px; overflow-y: auto; direction: ltr; border: 1px solid #1e293b; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #1e293b; border: 2px solid var(--danger); padding: 25px; border-radius: 20px; text-align: center; max-width: 350px; }
-        .countdown { font-size: 48px; font-weight: bold; color: var(--danger); margin: 15px 0; }
+
+        /* التيرمينال وسجل الأحداث الخارق */
+        .terminal { background: #07090e; color: #38bdf8; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; text-align: left; padding: 12px; border-radius: 12px; height: 100px; overflow-y: auto; direction: ltr; border: 1px solid rgba(255,255,255,0.03); }
+
+        /* نافذة الطوارئ الفخمة */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.9); z-index: 999; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(10px); }
+        .modal-content { background: var(--card-bg); border: 2px solid var(--danger); padding: 25px; border-radius: 24px; text-align: center; max-width: 320px; box-shadow: 0 0 50px rgba(244, 63, 94, 0.3); }
+        .countdown { font-size: 52px; font-weight: 800; color: var(--danger); margin: 10px 0; font-family: monospace; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>PAWA Future-OS 🚀</h2>
+    <!-- الهيدر -->
+    <div class="header">
+        <h1>PAWA SprintFit</h1>
+        <div class="battery-badge">⚡ <span id="batteryLevel">--%</span></div>
+    </div>
     
+    <!-- بطاقة الاتصال الرئيسية -->
     <div class="card">
-        <div class="status-badge">
+        <div class="connection-box">
+            <div class="status-info">
+                <h3 id="statusText">السوار غير متصل</h3>
+                <p id="bioState">جاهز للمسح الضوئي والبلوتوث</p>
+            </div>
             <span id="statusDot" class="dot"></span>
-            <span id="statusText">السوار غير متصل</span>
         </div>
-        <button id="connectBtn">ربط السوار الذكي (BLE)</button>
+        <button id="connectBtn">ربط السوار الحصري (BLE)</button>
     </div>
 
-    <div class="card">
-        <h3>الدرع الحيوي والسياقي</h3>
-        <p id="bioState" style="color: #94a3b8;">الحالة: جاهز للمراقبة الصامتة</p>
-        <p id="contextState" style="color: #38bdf8; font-weight: bold;">الوضع: طبيعي (وضع الاستعداد)</p>
+    <!-- بطاقة المؤشرات الحيوية وسياق النظام (على طراز التطبيقات الأصلية) -->
+    <div class="card" style="text-align: right;">
+        <h3 style="margin-top: 0; font-size: 15px; color: var(--text-muted);">المؤشرات السيبرانية-الحيوية</h3>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span>نبض القلب (HR)</span>
+                <strong id="hrValue">--</strong> <span style="font-size:10px; display:inline;">BPM</span>
+            </div>
+            <div class="metric-card">
+                <span>مستوى التوتر (HRV)</span>
+                <strong id="stressValue">متزن</strong>
+            </div>
+        </div>
+        <p id="contextState" style="font-size: 13px; color: var(--accent-blue); margin-top: 15px; margin-bottom: 0; text-align: center;">🛡️ السياق الحالي: الوضع الطبيعي الآمن</p>
     </div>
 
-    <div class="card">
-        <h3>سجل النظام والتعلم الذاتي</h3>
-        <div id="logBox" class="terminal">[SYSTEM]: بدء تشغيل نواة المستقبل...</div>
+    <!-- سجل النظام والتعلم الذاتي -->
+    <div class="card" style="text-align: right;">
+        <h3 style="margin-top: 0; font-size: 15px; color: var(--text-muted);">سجل التشغيل والذكاء الصامت</h3>
+        <div id="logBox" class="terminal">[SYSTEM]: واجهة التطبيق جاهزة للربط الفعلي...</div>
     </div>
 </div>
 
-<!-- نافذة الطوارئ القصوى والعداد التنازلي الذكي -->
+<!-- نافذة الطوارئ القصوى الذكية -->
 <div id="emergencyModal" class="modal">
     <div class="modal-content">
-        <h2 style="color: var(--danger); margin-top:0;">⚠️ تحذير طارئ قصوى</h2>
-        <p>تم رصد توقف خطير في المؤشرات الحيوية مع ثبات الجهاز!</p>
+        <h2 style="color: var(--danger); margin-top:0;">⚠️ تنبيه طوارئ قصوى</h2>
+        <p style="font-size: 13px; color: var(--text-muted);">تم رصد توقف خطير في المؤشرات الحيوية مع ثبات الجهاز!</p>
         <div id="countdownTimer" class="countdown">30</div>
-        <p style="font-size: 13px; color: #94a3b8;">سيتم إرسال نداء استغاثة للطوارئ تلقائياً ما لم تقم بإلغاء الإنذار.</p>
-        <button onclick="cancelEmergency()" style="background: var(--success);">أنا بخير (إلغاء الإنذار)</button>
+        <p style="font-size: 12px; color: var(--text-muted);">سيتم إرسال نداء استغاثة تلقائياً ما لم تؤكد أنك بخير.</p>
+        <button onclick="cancelEmergency()" style="background: var(--success); margin-top: 15px;">أنا بخير (إلغاء الإنذار)</button>
     </div>
 </div>
 
